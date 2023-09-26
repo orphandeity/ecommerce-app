@@ -14,11 +14,22 @@ class UserService {
   }
 
   async findById(id) {
-    return await userModel.findById(id);
+    console.log("user service findById: ", id);
+    try {
+      const user = await userModel.findById(id);
+      return user;
+    } catch (err) {
+      throw new Error("Failed to find user");
+    }
   }
 
   async update(username, id) {
-    return await userModel.update({ username, id });
+    try {
+      const user = await userModel.update({ username, id });
+      return user;
+    } catch (err) {
+      throw new Error("Failed to update user");
+    }
   }
 
   async create(username, password) {
