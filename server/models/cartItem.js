@@ -1,10 +1,10 @@
 const db = require("../db");
 
 module.exports = class CartItemModel {
-  static async create(data) {
+  static async create({ cartId, productId }) {
     try {
       const statement = `INSERT INTO cart_items (cart_id, product_id) VALUES ($1, $2) RETURNING *`;
-      const values = [data.cartId, data.productId];
+      const values = [cartId, productId];
       const result = await db.query(statement, values);
 
       if (result.rows.length) {
