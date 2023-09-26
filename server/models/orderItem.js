@@ -6,7 +6,7 @@ module.exports = class OrderItemModel {
     this.productId = data.productId || null;
   }
 
-  async create() {
+  static async create() {
     try {
       const statement = `INSERT INTO order_items (order_id, product_id) VALUES ($1, $2) RETURNING *`;
       const values = [this.orderId, this.productId];
@@ -21,22 +21,6 @@ module.exports = class OrderItemModel {
       throw new Error(err);
     }
   }
-
-  // static async create(data) {
-  //   try {
-  //     const statement = `INSERT INTO order_items (order_id, product_id) VALUES ($1, $2) RETURNING *`;
-  //     const values = [data.orderId, data.productId];
-  //     const result = await db.query(statement, values);
-
-  //     if (result.rows.length) {
-  //       return result.rows[0];
-  //     } else {
-  //       return null;
-  //     }
-  //   } catch (err) {
-  //     throw new Error(err);
-  //   }
-  // }
 
   static async findByOrderId(orderId) {
     try {
