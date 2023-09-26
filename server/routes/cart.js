@@ -15,34 +15,30 @@ module.exports = (app) => {
 
   // create cart
   router.post("/", async (req, res, next) => {
-    if (req.user) {
-      try {
-        const cart = await CartService.create(req.user.id);
-        res.status(201).json(cart);
-      } catch (err) {
-        next(err);
-      }
-    } else {
-      res.status(404).json({ message: "Not logged in" });
+    // Check if user is logged in
+    if (!req.user) res.status(404).json({ message: "Not logged in" });
+    try {
+      const cart = await CartService.create(req.user.id);
+      res.status(201).json(cart);
+    } catch (err) {
+      next(err);
     }
   });
 
   // get cart
   router.get("/", async (req, res, next) => {
-    if (req.user) {
-      try {
-        const cart = await CartService.findByUserId(req.user.id);
-        if (!cart) {
-          res.status(404).json({ message: "Not found" });
-        } else {
-          const items = await CartService.findItems(cart.id);
-          res.status(200).json({ ...cart, items });
-        }
-      } catch (err) {
-        next(err);
+    // Check if user is logged in
+    if (!req.user) res.status(404).json({ message: "Not logged in" });
+    try {
+      const cart = await CartService.findByUserId(req.user.id);
+      if (!cart) {
+        res.status(404).json({ message: "Not found" });
+      } else {
+        const items = await CartService.findItems(cart.id);
+        res.status(200).json({ ...cart, items });
       }
-    } else {
-      res.status(404).json({ message: "Not logged in" });
+    } catch (err) {
+      next(err);
     }
   });
 
@@ -51,27 +47,27 @@ module.exports = (app) => {
     "/items",
     [body("productId").isInt().toInt()],
     async (req, res, next) => {
+      // Check if user is logged in
+      if (!req.user) res.status(404).json({ message: "Not logged in" });
       // Validate incoming data
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(422).send(errors.array());
       }
       const { productId } = matchedData(req);
-      if (req.user) {
-        try {
-          const cart = await CartService.findByUserId(req.user.id);
-          if (!cart) {
-            res.status(404).json({ message: "Not found" });
-          } else {
-            const item = await CartService.addItem({
-              cartId: cart.id,
-              productId,
-            });
-            res.status(201).json(item);
-          }
-        } catch (err) {
-          next(err);
+      try {
+        const cart = await CartService.findByUserId(req.user.id);
+        if (!cart) {
+          res.status(404).json({ message: "Not found" });
+        } else {
+          const item = await CartService.addItem({
+            cartId: cart.id,
+            productId,
+          });
+          res.status(201).json(item);
         }
+      } catch (err) {
+        next(err);
       }
     }
   );
@@ -81,6 +77,8 @@ module.exports = (app) => {
     "/items/:id",
     [param("id").isInt().toInt()],
     async (req, res, next) => {
+      // Check if user is logged in
+      if (!req.user) res.status(404).json({ message: "Not logged in" });
       // Validate incoming data
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -99,6 +97,8 @@ module.exports = (app) => {
 
   // checkout
   router.post("/checkout", (req, res, next) => {
+    // Check if user is logged in
+    if (!req.user) res.status(404).json({ message: "Not logged in" });
     res.status(531).json({ message: "Not implemented" });
   });
 };
