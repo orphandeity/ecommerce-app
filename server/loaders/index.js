@@ -3,8 +3,11 @@ const passportLoader = require("./passport");
 const routeLoader = require("../routes");
 
 module.exports = async (app) => {
+  // Express middleware
   const expressApp = await expressLoader(app);
+  // Passport middleware
   const passport = await passportLoader(expressApp);
+  // Routes
   await routeLoader(app, passport);
   // Errors
   app.use((err, req, res, next) => {
