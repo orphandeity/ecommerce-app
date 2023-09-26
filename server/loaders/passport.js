@@ -1,5 +1,8 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
+const bcrypt = require("bcrypt");
+
+const userService = require("../services/user");
 
 module.exports = (app) => {
   app.use(passport.initialize());
@@ -15,14 +18,22 @@ module.exports = (app) => {
     done(null, { id: user.id, username: user.username });
   });
 
-  // configure local strategy to be used for local login
+  // local login
   passport.use(
     new LocalStrategy(async (username, password, done) => {
-      // TODO: check to see if the username exists
-      // if (!user) return done(null, false, { message: "Incorrect username or password" });
-      // TODO: check to see if the password matches the hashed password from the database
-      // if (password !== hashedPassword) return done(null, false, { message: "Incorrect username or password" });
-      // return done(null, user);
+      try {
+        const user = await userService.getUserByUsername(username);
+        if (!user) return done(null, false);
+
+        const isMatch = await bcrypt.compare(password, user.password_hash);
+
+        if (!isMatch) return done(null, false);
+        else return done(null, user);
+      } catch (err) {
+        return done(err);
+      }
     })
   );
+
+  return passport;
 };

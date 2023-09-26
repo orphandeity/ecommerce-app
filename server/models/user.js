@@ -1,6 +1,6 @@
 const db = require("../db");
 
-module.exports = class UserModel {
+class UserModel {
   async create(data) {
     try {
       const statement = `INSERT INTO users (username, password_hash) VALUES ($1, $2) RETURNING *`;
@@ -64,4 +64,6 @@ module.exports = class UserModel {
       throw new Error(err);
     }
   }
-};
+}
+
+module.exports = new UserModel();
