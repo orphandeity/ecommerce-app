@@ -38,6 +38,15 @@ module.exports = class CartService {
     }
   }
 
+  static async findItems(cartId) {
+    try {
+      const items = await CartItemModel.findByCartId(cartId);
+      return items;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
   static async addItem({ cartId, productId }) {
     try {
       const item = await CartItemModel.create({ cartId, productId });

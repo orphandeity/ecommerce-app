@@ -32,8 +32,12 @@ module.exports = (app) => {
     if (req.user) {
       try {
         const cart = await CartService.findByUserId(req.user.id);
-        if (cart) res.status(200).json(cart);
-        else res.status(404).json({ message: "Not found" });
+        if (!cart) {
+          res.status(404).json({ message: "Not found" });
+        } else {
+          const items = await CartService.findItems(cart.id);
+          res.status(200).json({ ...cart, items });
+        }
       } catch (err) {
         next(err);
       }
