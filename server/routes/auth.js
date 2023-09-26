@@ -17,13 +17,14 @@ module.exports = (app, passport) => {
         .isStrongPassword({ minLength: 6, maxLength: 20 }),
     ],
     async (req, res, next) => {
+      // Validate incoming data
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(422).send(errors.array());
       }
-
       const { username, password } = matchedData(req);
       try {
+        // Check if username already exists
         const user = await userService.findByUsername(username);
         if (user) {
           return res.status(400).send({
@@ -31,6 +32,7 @@ module.exports = (app, passport) => {
             message: "Username already exists",
           });
         } else {
+          // Create new user
           const newUser = await userService.create(username, password);
           req.login(newUser, (err) => {
             if (err) return next(err);
@@ -50,6 +52,7 @@ module.exports = (app, passport) => {
       body("password").trim().notEmpty().escape(),
     ],
     (req, res, next) => {
+      // Validate incoming data
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(422).send(errors.array());
@@ -57,10 +60,12 @@ module.exports = (app, passport) => {
         next();
       }
     },
+    // Authenticate user
     passport.authenticate("local", {
       successMessage: true,
       failureMessage: true,
     }),
+    // Send user data
     (req, res, next) => {
       res.status(200).send(req.user);
     }
