@@ -22,10 +22,13 @@ module.exports = (app) => {
   passport.use(
     new LocalStrategy(async (username, password, done) => {
       try {
-        const user = await userService.getUserByUsername(username);
+        console.log("passport local strategy");
+        const user = await userService.findByUsername(username);
         if (!user) return done(null, false);
+        console.log("user ", user);
 
         const isMatch = await bcrypt.compare(password, user.password_hash);
+        console.log("isMatch ", isMatch);
 
         if (!isMatch) return done(null, false);
         else return done(null, user);

@@ -4,6 +4,7 @@ const userModel = require("../models/user");
 class UserService {
   async findByUsername(username) {
     try {
+      console.log("user service findByUsername");
       return await userModel.findByUsername(username);
     } catch (err) {
       throw new Error("Failed to find user");
