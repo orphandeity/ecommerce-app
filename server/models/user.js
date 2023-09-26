@@ -1,10 +1,10 @@
 const db = require("../db");
 
 class UserModel {
-  async create(data) {
+  async create({ username, hash }) {
     try {
       const statement = `INSERT INTO users (username, password_hash) VALUES ($1, $2) RETURNING *`;
-      const values = [data.username, data.passwordHash];
+      const values = [username, hash];
       const result = await db.query(statement, values);
 
       if (result.rows.length) {
@@ -13,7 +13,8 @@ class UserModel {
         return null;
       }
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
+      throw new Error("Failed to create user");
     }
   }
 
@@ -45,7 +46,8 @@ class UserModel {
         return null;
       }
     } catch (err) {
-      throw new Error(err);
+      console.error(err);
+      throw new Error("Failed to find user");
     }
   }
 

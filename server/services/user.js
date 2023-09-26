@@ -1,20 +1,31 @@
+const bcrypt = require("bcrypt");
 const userModel = require("../models/user");
 
 class UserService {
-  async getUserByUsername(username) {
-    return await userModel.findByUsername(username);
+  async findByUsername(username) {
+    try {
+      return await userModel.findByUsername(username);
+    } catch (err) {
+      throw new Error("Failed to find user");
+    }
   }
 
-  async getUserById(id) {
+  async findById(id) {
     return await userModel.findById(id);
   }
 
-  async updateUser(username, id) {
+  async update(username, id) {
     return await userModel.update({ username, id });
   }
 
-  async createUser(username, passwordHash) {
-    return await userModel.create({ username, password });
+  async create(username, password) {
+    try {
+      const hash = await bcrypt.hash(password, 10);
+      const response = await userModel.create({ username, hash });
+      return response;
+    } catch (err) {
+      throw new Error("Failed to create user");
+    }
   }
 }
 
