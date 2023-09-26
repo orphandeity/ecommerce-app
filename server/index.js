@@ -1,6 +1,8 @@
 const express = require("express");
 const helmet = require("helmet");
 const session = require("express-session");
+const pgSession = require("connect-pg-simple")(session);
+const db = require("./db");
 const app = express();
 
 const { PORT, SESSION_SECRET } = require("./config");
@@ -15,6 +17,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 },
+    store: new pgSession({ pool: db }),
   })
 );
 
