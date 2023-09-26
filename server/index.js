@@ -3,6 +3,7 @@ const helmet = require("helmet");
 const session = require("express-session");
 const pgSession = require("connect-pg-simple")(session);
 const db = require("./db");
+const routeLoader = require("./routes");
 const app = express();
 
 const { PORT, SESSION_SECRET } = require("./config");
@@ -22,9 +23,7 @@ app.use(
 );
 
 // Routes
-app.get("/", (req, res) => {
-  res.send("Hello world!");
-});
+routeLoader(app);
 
 // Errors
 app.use((err, req, res, next) => {
