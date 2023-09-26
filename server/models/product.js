@@ -1,6 +1,6 @@
 const db = require("../db");
 
-module.exports = class ProductModel {
+class ProductModel {
   // find all products
   async find() {
     try {
@@ -53,4 +53,6 @@ module.exports = class ProductModel {
       throw err;
     }
   }
-};
+}
+
+module.exports = new ProductModel();
