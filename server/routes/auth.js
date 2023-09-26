@@ -1,4 +1,5 @@
 const express = require("express");
+const { body, matchedData, validationResult } = require("express-validator");
 const router = express.Router();
 
 const userService = require("../services/user");
@@ -6,29 +7,56 @@ const userService = require("../services/user");
 module.exports = (app, passport) => {
   app.use("/api/auth", router);
 
-  router.post("/register", async (req, res, next) => {
-    const { username, password } = req.body;
-    try {
-      const user = await userService.findByUsername(username);
-      if (user) {
-        return res.status(400).send({
-          status: "error",
-          message: "Username already exists",
-        });
-      } else {
-        const newUser = await userService.create(username, password);
-        req.login(newUser, (err) => {
-          if (err) return next(err);
-          return res.status(200).send(newUser);
-        });
+  router.post(
+    "/register",
+    [
+      body("username").trim().isAlphanumeric().isLength({ min: 3, max: 20 }),
+      body("password")
+        .trim()
+        .escape()
+        .isStrongPassword({ minLength: 6, maxLength: 20 }),
+    ],
+    async (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).send(errors.array());
       }
-    } catch (err) {
-      next(err);
+
+      const { username, password } = matchedData(req);
+      try {
+        const user = await userService.findByUsername(username);
+        if (user) {
+          return res.status(400).send({
+            status: "error",
+            message: "Username already exists",
+          });
+        } else {
+          const newUser = await userService.create(username, password);
+          req.login(newUser, (err) => {
+            if (err) return next(err);
+            return res.status(200).send(newUser);
+          });
+        }
+      } catch (err) {
+        next(err);
+      }
     }
-  });
+  );
 
   router.post(
     "/login",
+    [
+      body("username").trim().notEmpty().escape(),
+      body("password").trim().notEmpty().escape(),
+    ],
+    (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(422).send(errors.array());
+      } else {
+        next();
+      }
+    },
     passport.authenticate("local", {
       successMessage: true,
       failureMessage: true,

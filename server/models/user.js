@@ -35,11 +35,11 @@ class UserModel {
   }
 
   async findByUsername(username) {
+    console.log("user model findByUsername: ", username);
     try {
       const statement = `SELECT * FROM users WHERE username = $1`;
       const values = [username];
       const result = await db.query(statement, values);
-
       if (result.rows.length) {
         return result.rows[0];
       } else {
