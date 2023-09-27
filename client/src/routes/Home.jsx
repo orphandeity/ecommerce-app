@@ -1,4 +1,4 @@
-function App() {
+function Root() {
   return (
     <>
       <h1>E-Commerce App</h1>
@@ -6,4 +6,4 @@ function App() {
   );
 }
 
-export default App;
+export default Root;
