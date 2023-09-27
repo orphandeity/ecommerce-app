@@ -20,7 +20,7 @@ export default function RootLayout() {
             <a href="/login">Login</a>
           </li>
           <li>
-            <a href="/register">Register</a>
+            <a href="/signup">Signup</a>
           </li>
         </ul>
       </header>

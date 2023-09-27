@@ -5,6 +5,7 @@ import RootLayout from "./routes/RootLayout";
 import Home, { loader as homeLoader } from "./routes/Home";
 import Product, { loader as productLoader } from "./routes/Product";
 import Login, { action as loginAction } from "./routes/Login";
+import Signup, { action as signupAction } from "./routes/Signup";
 import "./styles/reset.css";
 
 const router = createBrowserRouter([
@@ -25,6 +26,11 @@ const router = createBrowserRouter([
         path: "login",
         action: loginAction,
         Component: Login,
+      },
+      {
+        path: "signup",
+        action: signupAction,
+        Component: Signup,
       },
     ],
   },
