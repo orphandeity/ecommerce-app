@@ -1,7 +1,7 @@
 function Root() {
   return (
     <>
-      <h1>E-Commerce App</h1>
+      <h1>Home Page</h1>
     </>
   );
 }
