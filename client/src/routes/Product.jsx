@@ -1,5 +1,11 @@
 import { useLoaderData } from "react-router-dom";
 
+export const loader = async ({ params }) => {
+  const response = await fetch(`/api/products/${params.id}`);
+  const data = await response.json();
+  return data;
+};
+
 export default function Product() {
   const product = useLoaderData();
 

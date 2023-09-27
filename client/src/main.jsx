@@ -2,10 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./routes/RootLayout";
-import Home from "./routes/Home";
-import homeLoader from "./loaders/home";
-import Product from "./routes/Product";
-import productLoader from "./loaders/product";
+import Home, { loader as homeLoader } from "./routes/Home";
+import Product, { loader as productLoader } from "./routes/Product";
 import "./styles/reset.css";
 
 const router = createBrowserRouter([

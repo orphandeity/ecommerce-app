@@ -1,5 +1,11 @@
 import { useLoaderData } from "react-router-dom";
 
+export const loader = async () => {
+  const response = await fetch("/api/products");
+  const data = await response.json();
+  return data;
+};
+
 function Home() {
   const products = useLoaderData();
 
