@@ -1,10 +1,5 @@
 const express = require("express");
-const {
-  body,
-  param,
-  validationResult,
-  matchedData,
-} = require("express-validator");
+const { body, param, matchedData } = require("express-validator");
 const { authenticate, validate } = require("../middleware");
 
 const router = express.Router();
@@ -25,14 +20,15 @@ module.exports = (app) => {
   });
 
   // get cart
+  // looks for cart by user id and finds all items in cart
   router.get("/", [authenticate], async (req, res, next) => {
     try {
       const cart = await CartService.findByUserId(req.user.id);
-      if (!cart) {
-        res.status(404).json({ message: "Not found" });
-      } else {
+      if (cart) {
         const items = await CartService.findItems(cart.id);
         res.status(200).json({ ...cart, items });
+      } else {
+        res.status(404).json({ message: "Not found" });
       }
     } catch (err) {
       next(err);
@@ -40,6 +36,7 @@ module.exports = (app) => {
   });
 
   // add item to cart
+  // looks for cart by user id and creates new cartItem with cart id and product id
   router.post(
     "/items",
     [authenticate, body("productId").isInt().toInt(), validate],
@@ -47,14 +44,14 @@ module.exports = (app) => {
       const { productId } = matchedData(req);
       try {
         const cart = await CartService.findByUserId(req.user.id);
-        if (!cart) {
-          res.status(404).json({ message: "Not found" });
-        } else {
+        if (cart) {
           const item = await CartService.addItem({
             cartId: cart.id,
             productId,
           });
           res.status(201).json(item);
+        } else {
+          res.status(404).json({ message: "Not found" });
         }
       } catch (err) {
         next(err);
@@ -63,6 +60,7 @@ module.exports = (app) => {
   );
 
   // remove item from cart
+  // deletes cartItem by id
   router.delete(
     "/items/:id",
     [authenticate, param("id").isInt().toInt(), validate],
@@ -70,8 +68,7 @@ module.exports = (app) => {
       const { id } = matchedData(req);
       try {
         const item = await CartService.removeItem(id);
-        if (item) res.status(200).json(item);
-        else res.status(404).json({ message: "Not found" });
+        res.status(200).json(item);
       } catch (err) {
         next(err);
       }
@@ -79,10 +76,10 @@ module.exports = (app) => {
   );
 
   // checkout
+  // looks for cart by user id and calls checkout function
   router.post("/checkout", [authenticate], async (req, res, next) => {
     try {
       const cart = await CartService.findByUserId(req.user.id);
-      console.log("cart: ", cart);
       if (!cart) {
         res.status(404).json({ message: "Not found" });
       } else {
