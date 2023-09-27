@@ -1,9 +1,17 @@
 import { useLoaderData, Link } from "react-router-dom";
 
-export const loader = async () => {
-  const response = await fetch("/api/products");
-  const data = await response.json();
-  return data;
+const productListQuery = () => ({
+  queryKey: ["products"],
+  queryFn: () => fetch("/api/products").then((res) => res.json()),
+});
+
+export const loader = (queryClient) => async () => {
+  const query = productListQuery();
+
+  return (
+    queryClient.getQueryData(query.queryKey) ??
+    (await queryClient.fetchQuery(query))
+  );
 };
 
 function Home() {
