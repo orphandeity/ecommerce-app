@@ -5,6 +5,7 @@ const {
   validationResult,
   matchedData,
 } = require("express-validator");
+const { authenticate, validate } = require("../middleware");
 
 const router = express.Router();
 
@@ -14,9 +15,7 @@ module.exports = (app) => {
   app.use("/api/cart", router);
 
   // create cart
-  router.post("/", async (req, res, next) => {
-    // Check if user is logged in
-    if (!req.user) res.status(404).json({ message: "Not logged in" });
+  router.post("/", [authenticate], async (req, res, next) => {
     try {
       const cart = await CartService.create(req.user.id);
       res.status(201).json(cart);
@@ -26,9 +25,7 @@ module.exports = (app) => {
   });
 
   // get cart
-  router.get("/", async (req, res, next) => {
-    // Check if user is logged in
-    if (!req.user) res.status(404).json({ message: "Not logged in" });
+  router.get("/", [authenticate], async (req, res, next) => {
     try {
       const cart = await CartService.findByUserId(req.user.id);
       if (!cart) {
@@ -45,15 +42,8 @@ module.exports = (app) => {
   // add item to cart
   router.post(
     "/items",
-    [body("productId").isInt().toInt()],
+    [authenticate, body("productId").isInt().toInt(), validate],
     async (req, res, next) => {
-      // Check if user is logged in
-      if (!req.user) res.status(404).json({ message: "Not logged in" });
-      // Validate incoming data
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(422).send(errors.array());
-      }
       const { productId } = matchedData(req);
       try {
         const cart = await CartService.findByUserId(req.user.id);
@@ -75,15 +65,8 @@ module.exports = (app) => {
   // remove item from cart
   router.delete(
     "/items/:id",
-    [param("id").isInt().toInt()],
+    [authenticate, param("id").isInt().toInt(), validate],
     async (req, res, next) => {
-      // Check if user is logged in
-      if (!req.user) res.status(404).json({ message: "Not logged in" });
-      // Validate incoming data
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(422).send(errors.array());
-      }
       const { id } = matchedData(req);
       try {
         const item = await CartService.removeItem(id);
@@ -96,10 +79,7 @@ module.exports = (app) => {
   );
 
   // checkout
-  router.post("/checkout", async (req, res, next) => {
-    // Check if user is logged in
-    if (!req.user) res.status(404).json({ message: "Not logged in" });
-
+  router.post("/checkout", [authenticate], async (req, res, next) => {
     try {
       const cart = await CartService.findByUserId(req.user.id);
       console.log("cart: ", cart);

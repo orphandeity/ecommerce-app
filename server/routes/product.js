@@ -5,22 +5,19 @@ const {
   validationResult,
   matchedData,
 } = require("express-validator");
-const router = express.Router();
+const { validate } = require("../middleware");
 
 const productService = require("../services/product");
+
+const router = express.Router();
 
 module.exports = (app) => {
   app.use("/api/products", router);
 
   router.get(
     "/",
-    [query("categoryId").isInt().toInt().optional()],
+    [query("categoryId").isInt().toInt().optional(), validate],
     async (req, res, next) => {
-      // Validate incoming data
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(422).send(errors.array());
-      }
       const { categoryId } = matchedData(req);
       if (categoryId) {
         // If categoryId is provided, return products in that category
@@ -44,13 +41,8 @@ module.exports = (app) => {
 
   router.get(
     "/:productId",
-    [param("productId").isInt().toInt()],
+    [param("productId").isInt().toInt(), validate],
     async (req, res, next) => {
-      // Validate incoming data
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(422).send(errors.array());
-      }
       const { productId } = matchedData(req);
       try {
         const product = await productService.findById(productId);

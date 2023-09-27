@@ -1,17 +1,16 @@
 const express = require("express");
 const { param, validationResult, matchedData } = require("express-validator");
-const router = express.Router();
+const { authenticate, validate } = require("../middleware");
 
 const OrderService = require("../services/order");
+
+const router = express.Router();
 
 module.exports = (app) => {
   app.use("/api/orders", router);
 
   // get all orders
-  router.get("/", async (req, res, next) => {
-    // Check if user is logged in
-    if (!req.user) res.status(404).json({ message: "Not logged in" });
-
+  router.get("/", [authenticate], async (req, res, next) => {
     try {
       const orders = await OrderService.findByUserId(req.user.id);
       res.status(200).json(orders);
@@ -23,15 +22,8 @@ module.exports = (app) => {
   // get order by id
   router.get(
     "/:orderId",
-    [param("orderId").isInt().toInt()],
+    [authenticate, param("orderId").isInt().toInt(), validate],
     async (req, res, next) => {
-      // Check if user is logged in
-      if (!req.user) res.status(404).json({ message: "Not logged in" });
-      // Check if orderId is valid
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-      }
       try {
         const order = await OrderService.findById(req.params.orderId);
         // Check if order belongs to user

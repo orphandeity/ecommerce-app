@@ -1,8 +1,10 @@
 const express = require("express");
 const { body, matchedData, validationResult } = require("express-validator");
-const router = express.Router();
+const { authenticate, validate } = require("../middleware");
 
 const userService = require("../services/user");
+
+const router = express.Router();
 
 module.exports = (app, passport) => {
   app.use("/api/auth", router);
@@ -15,13 +17,9 @@ module.exports = (app, passport) => {
         .trim()
         .escape()
         .isStrongPassword({ minLength: 6, maxLength: 20 }),
+      validate,
     ],
     async (req, res, next) => {
-      // Validate incoming data
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(422).send(errors.array());
-      }
       const { username, password } = matchedData(req);
       try {
         // Check if username already exists
@@ -50,16 +48,8 @@ module.exports = (app, passport) => {
     [
       body("username").trim().notEmpty().escape(),
       body("password").trim().notEmpty().escape(),
+      validate,
     ],
-    (req, res, next) => {
-      // Validate incoming data
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(422).send(errors.array());
-      } else {
-        next();
-      }
-    },
     // Authenticate user
     passport.authenticate("local", {
       successMessage: true,
@@ -71,7 +61,7 @@ module.exports = (app, passport) => {
     }
   );
 
-  router.all("/logout", (req, res, next) => {
+  router.all("/logout", [authenticate], (req, res, next) => {
     req.logout((err) => {
       if (err) return next(err);
       return res
