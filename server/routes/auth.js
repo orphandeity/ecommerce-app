@@ -1,5 +1,5 @@
 const express = require("express");
-const { body, matchedData, validationResult } = require("express-validator");
+const { body, matchedData } = require("express-validator");
 const { authenticate, validate } = require("../middleware");
 
 const userService = require("../services/user");

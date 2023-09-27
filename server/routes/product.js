@@ -1,10 +1,5 @@
 const express = require("express");
-const {
-  query,
-  param,
-  validationResult,
-  matchedData,
-} = require("express-validator");
+const { query, param, matchedData } = require("express-validator");
 const { validate } = require("../middleware");
 
 const productService = require("../services/product");
@@ -43,9 +38,8 @@ module.exports = (app) => {
     "/:productId",
     [param("productId").isInt().toInt(), validate],
     async (req, res, next) => {
-      const { productId } = matchedData(req);
       try {
-        const product = await productService.findById(productId);
+        const product = await productService.findById(req.params.productId);
         if (product) {
           res.status(200).json(product);
         } else {
