@@ -1,15 +1,15 @@
 const db = require("../db");
 
 module.exports = class OrderItemModel {
-  constructorr(data = {}) {
-    this.orderId = data.orderId || null;
-    this.productId = data.productId || null;
+  constructor(data = {}) {
+    this.order_id = data.orderId || null;
+    this.product_id = data.productId || null;
   }
 
-  static async create() {
+  async create() {
     try {
       const statement = `INSERT INTO order_items (order_id, product_id) VALUES ($1, $2) RETURNING *`;
-      const values = [this.orderId, this.productId];
+      const values = [this.order_id, this.product_id];
       const result = await db.query(statement, values);
 
       if (result.rows.length) {

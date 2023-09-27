@@ -48,4 +48,21 @@ module.exports = class CartItemModel {
       throw new Error(err);
     }
   }
+
+  static async totalPrice(cartId) {
+    const statement = `
+      SELECT SUM(products.price_usd) AS total_price
+      FROM cart_items
+      JOIN products ON cart_items.product_id = products.id
+      WHERE cart_items.cart_id = $1
+    `;
+    const values = [cartId];
+    const result = await db.query(statement, values);
+
+    if (result.rows.length) {
+      return result.rows[0];
+    } else {
+      return null;
+    }
+  }
 };

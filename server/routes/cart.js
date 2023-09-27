@@ -96,9 +96,21 @@ module.exports = (app) => {
   );
 
   // checkout
-  router.post("/checkout", (req, res, next) => {
+  router.post("/checkout", async (req, res, next) => {
     // Check if user is logged in
     if (!req.user) res.status(404).json({ message: "Not logged in" });
-    res.status(531).json({ message: "Not implemented" });
+
+    try {
+      const cart = await CartService.findByUserId(req.user.id);
+      console.log("cart: ", cart);
+      if (!cart) {
+        res.status(404).json({ message: "Not found" });
+      } else {
+        const checkout = await CartService.checkout(req.user.id, cart.id);
+        res.status(200).json(checkout);
+      }
+    } catch (err) {
+      next(err);
+    }
   });
 };

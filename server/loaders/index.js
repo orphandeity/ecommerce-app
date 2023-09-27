@@ -11,7 +11,7 @@ module.exports = async (app) => {
   await routeLoader(app, passport);
   // Errors
   app.use((err, req, res, next) => {
-    const { message, status } = err;
-    return res.status(status).json({ message });
+    const { message } = err;
+    return res.status(500).json({ message });
   });
 };

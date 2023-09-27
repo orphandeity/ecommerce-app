@@ -14,7 +14,7 @@ module.exports = class OrderModel {
     );
   }
 
-  async create(userId) {
+  static async create(userId) {
     try {
       const statement = `INSERT INTO orders (user_id) VALUES ($1) RETURNING *`;
       const values = [userId];
@@ -26,7 +26,7 @@ module.exports = class OrderModel {
         return null;
       }
     } catch (err) {
-      throw new Error(err);
+      throw new Error("Error creating order");
     }
   }
 
