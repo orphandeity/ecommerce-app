@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./routes/RootLayout";
 import Home from "./routes/Home";
+import homeLoader from "./loaders/home";
 import "./styles/reset.css";
 
 const router = createBrowserRouter([
@@ -11,6 +12,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
+        loader: homeLoader,
         Component: Home,
       },
     ],
