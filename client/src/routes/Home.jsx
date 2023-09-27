@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, Link } from "react-router-dom";
 
 export const loader = async () => {
   const response = await fetch("/api/products");
@@ -16,7 +16,7 @@ function Home() {
         {products.map((product) => {
           return (
             <li key={product.id}>
-              <a href={`/products/${product.id}`}>{product.name}</a>
+              <Link to={`/products/${product.id}`}>{product.name}</Link>
             </li>
           );
         })}

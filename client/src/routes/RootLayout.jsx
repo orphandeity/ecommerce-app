@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import styles from "../styles/rootLayout.module.css";
 
 import Cookies from "js-cookie";
@@ -14,13 +14,16 @@ export default function RootLayout() {
   return (
     <div className={styles.layout}>
       <header className={styles.header}>
-        <strong>E-Commerce App</strong>
+        <Link to="/">
+          <strong>E-Commerce App</strong>
+        </Link>
+
         <ul className={styles.auth}>
           <li>
-            <a href="/login">Login</a>
+            <Link to="login">Login</Link>
           </li>
           <li>
-            <a href="/signup">Signup</a>
+            <Link to="signup">Signup</Link>
           </li>
         </ul>
       </header>
