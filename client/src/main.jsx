@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./routes/RootLayout";
 import Home from "./routes/Home";
 import homeLoader from "./loaders/home";
+import Product from "./routes/Product";
+import productLoader from "./loaders/product";
 import "./styles/reset.css";
 
 const router = createBrowserRouter([
@@ -14,6 +16,11 @@ const router = createBrowserRouter([
         path: "/",
         loader: homeLoader,
         Component: Home,
+      },
+      {
+        path: "/products/:id",
+        loader: productLoader,
+        Component: Product,
       },
     ],
   },
