@@ -1,4 +1,4 @@
-function Root() {
+function Home() {
   return (
     <>
       <h1>Home Page</h1>
@@ -6,4 +6,4 @@ function Root() {
   );
 }
 
-export default Root;
+export default Home;
