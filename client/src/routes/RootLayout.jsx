@@ -15,6 +15,14 @@ export default function RootLayout() {
     <div className={styles.layout}>
       <header className={styles.header}>
         <strong>E-Commerce App</strong>
+        <ul className={styles.auth}>
+          <li>
+            <a href="/login">Login</a>
+          </li>
+          <li>
+            <a href="/register">Register</a>
+          </li>
+        </ul>
       </header>
       <div className={styles.content}>
         <Outlet />

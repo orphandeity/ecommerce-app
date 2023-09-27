@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./routes/RootLayout";
 import Home, { loader as homeLoader } from "./routes/Home";
 import Product, { loader as productLoader } from "./routes/Product";
+import Login, { action as loginAction } from "./routes/Login";
 import "./styles/reset.css";
 
 const router = createBrowserRouter([
@@ -16,9 +17,14 @@ const router = createBrowserRouter([
         Component: Home,
       },
       {
-        path: "/products/:id",
+        path: "products/:id",
         loader: productLoader,
         Component: Product,
+      },
+      {
+        path: "login",
+        action: loginAction,
+        Component: Login,
       },
     ],
   },

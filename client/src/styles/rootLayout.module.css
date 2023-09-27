@@ -10,6 +10,11 @@
   align-items: center;
 }
 
+.auth {
+  display: flex;
+  gap: 2rem;
+}
+
 .content {
   flex: 1;
 }
