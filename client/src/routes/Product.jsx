@@ -1,8 +1,9 @@
 import { useLoaderData } from "react-router-dom";
+import axios from "axios";
 
 const productDetailQuery = (id) => ({
   queryKey: ["products", id],
-  queryFn: () => fetch(`/api/products/${id}`).then((res) => res.json()),
+  queryFn: () => axios(`/api/products/${id}`).then((res) => res.data),
 });
 
 export const loader =

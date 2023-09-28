@@ -1,10 +1,18 @@
 import { Form, useNavigation, useActionData, redirect } from "react-router-dom";
+import axios from "axios";
 
 export const action = async ({ request }) => {
-  const formData = await request.formData();
-  const credentials = Object.fromEntries(formData);
-  console.log(credentials);
-  await new Promise((resolve) => setTimeout(resolve, 2000)); // simulate network latency
+  try {
+    const formData = await request.formData();
+    const credentials = Object.fromEntries(formData);
+    const response = await axios.post("/api/auth/register", credentials);
+    if (response.status !== 200) {
+      return { error: response.statusText };
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
   return redirect("/");
 };
 
