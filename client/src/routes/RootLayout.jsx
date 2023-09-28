@@ -1,7 +1,8 @@
-import { Outlet, Link, Form, useLoaderData } from "react-router-dom";
+import { Outlet, Link, Form, useLoaderData, redirect } from "react-router-dom";
 
 import styles from "../styles/rootLayout.module.css";
 import { authQuery, logout } from "../lib/auth";
+import { useState } from "react";
 
 export const loader = (queryClient) => () => {
   const query = authQuery();
@@ -14,7 +15,7 @@ export const action = (queryClient) => async () => {
     const response = await logout();
     if (response.status == 200) {
       await queryClient.invalidateQueries("isAuthenticated");
-      return response.data;
+      return redirect("/");
     } else {
       return { error: response.statusText };
     }
@@ -25,7 +26,7 @@ export const action = (queryClient) => async () => {
 
 export default function RootLayout() {
   const { isAuthenticated } = useLoaderData();
-  console.log(isAuthenticated);
+  const [isLoggedIn, setisLoggedIn] = useState(isAuthenticated);
 
   return (
     <div className={styles.layout}>
@@ -34,10 +35,10 @@ export default function RootLayout() {
           <strong>E-Commerce App</strong>
         </Link>
 
-        {isAuthenticated && <p>Hello!</p>}
+        {isLoggedIn && <p>Hello!</p>}
 
         <ul className={styles.auth}>
-          {isAuthenticated ? (
+          {isLoggedIn ? (
             <li>
               <Form method="post">
                 <button type="submit">Logout</button>

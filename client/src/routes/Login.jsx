@@ -1,15 +1,16 @@
-import { Form, useNavigation, useActionData } from "react-router-dom";
+import { Form, useNavigation, useActionData, redirect } from "react-router-dom";
 import { login } from "../lib/auth";
 
 export const action =
   (queryClient) =>
   async ({ request }) => {
     try {
-      const formData = await request.formData();
-      const credentials = Object.fromEntries(formData);
-      const user = await login(credentials);
+      let formData = await request.formData();
+      let credentials = Object.fromEntries(formData);
+      let response = await login(credentials);
       await queryClient.invalidateQueries("isAuthenticated");
-      return user;
+      if (response.status == 200) return redirect("/");
+      else return { error: response.statusText };
     } catch (err) {
       console.error(err);
     }
@@ -22,6 +23,7 @@ export default function Login() {
   let isLoggingIn = navigation.formData?.get("username") != null;
 
   let actionData = useActionData();
+  console.log(actionData);
 
   return (
     <div style={{ display: "grid", placeItems: "center" }}>

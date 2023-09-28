@@ -15,14 +15,14 @@ import Product, { loader as productLoader } from "./routes/Product";
 import Login, { action as loginAction } from "./routes/Login";
 import Signup, { action as signupAction } from "./routes/Signup";
 
-const queryClient = new QueryClient({
+const queryClient = new QueryClient(/**{
   defaultOptions: {
     queries: {
       staleTime: 1000, // 1 second
       refetchOnWindowFocus: false,
     },
   },
-});
+}*/);
 
 const router = createBrowserRouter([
   {
