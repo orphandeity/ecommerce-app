@@ -11,7 +11,7 @@ export const action =
       if (response.status !== 200) {
         return { error: response.statusText };
       } else {
-        await queryClient.invalidateQueries("isAuthenticated");
+        queryClient.invalidateQueries({ queryKey: ["isAuthenticated"] });
         return redirect("/");
       }
     } catch (err) {

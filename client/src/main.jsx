@@ -6,10 +6,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import "./styles/reset.css";
 
-import RootLayout, {
-  loader as authLoader,
-  action as logoutAction,
-} from "./routes/RootLayout";
+import RootLayout, { action as logoutAction } from "./routes/RootLayout";
 import Home, { loader as homeLoader } from "./routes/Home";
 import Product, { loader as productLoader } from "./routes/Product";
 import Login, { action as loginAction } from "./routes/Login";
@@ -28,7 +25,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
-    loader: authLoader(queryClient),
+    // loader: authLoader(queryClient),
     action: logoutAction(queryClient),
     children: [
       {

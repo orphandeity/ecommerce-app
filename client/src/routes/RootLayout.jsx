@@ -1,32 +1,24 @@
-import { Outlet, Link, Form, useLoaderData, redirect } from "react-router-dom";
+import { Outlet, Link, Form, redirect } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { authQuery, logout } from "../lib/auth";
 
 import styles from "../styles/rootLayout.module.css";
-import { authQuery, logout } from "../lib/auth";
-import { useState } from "react";
-
-export const loader = (queryClient) => () => {
-  const query = authQuery();
-  return queryClient.ensureQueryData(query);
-};
 
 // logout action
 export const action = (queryClient) => async () => {
   try {
-    const response = await logout();
-    if (response.status == 200) {
-      await queryClient.invalidateQueries("isAuthenticated");
-      return redirect("/");
-    } else {
-      return { error: response.statusText };
-    }
+    await logout();
+    queryClient.invalidateQueries({ queryKey: ["isAuthenticated"] });
+    return redirect("/");
   } catch (err) {
     console.error(err);
   }
+  return { error: "Unknown error" };
 };
 
 export default function RootLayout() {
-  const { isAuthenticated } = useLoaderData();
-  const [isLoggedIn, setisLoggedIn] = useState(isAuthenticated);
+  const { data } = useQuery(authQuery());
+  const isLoggedIn = data?.isAuthenticated;
 
   return (
     <div className={styles.layout}>
