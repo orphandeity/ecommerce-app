@@ -1,8 +1,8 @@
 import { Outlet, redirect } from "react-router-dom";
 import { logout } from "../lib/auth";
+import Header from "../components/Header";
 
 import styles from "../styles/rootLayout.module.css";
-import Header from "../components/Header";
 
 // logout action
 export const action = (queryClient) => async () => {

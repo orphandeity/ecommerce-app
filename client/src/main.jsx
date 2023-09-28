@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import "./styles/reset.css";
+import "./styles/global.css";
 
 import RootLayout, { action as logoutAction } from "./routes/RootLayout";
 import Home, { loader as homeLoader } from "./routes/Home";

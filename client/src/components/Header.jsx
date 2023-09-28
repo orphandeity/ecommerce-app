@@ -1,8 +1,8 @@
 import { Link, Form } from "react-router-dom";
-
-import styles from "../styles/rootLayout.module.css";
 import { useQuery } from "@tanstack/react-query";
 import { authQuery } from "../lib/auth";
+
+import styles from "../styles/header.module.css";
 
 export default function Header() {
   const { data } = useQuery(authQuery());

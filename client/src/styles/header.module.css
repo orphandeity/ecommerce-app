@@ -1,0 +1,21 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--padding);
+}
+
+.header a {
+  color: var(--foreground-color);
+  text-decoration: none;
+}
+
+.header a:is(:hover, :active) {
+  color: var(--on-hover-color);
+}
+
+.auth {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
