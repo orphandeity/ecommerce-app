@@ -69,4 +69,8 @@ module.exports = (app, passport) => {
         .json({ status: "success", message: "User logged out" });
     });
   });
+
+  router.get("/status", (req, res, next) => {
+    return res.status(200).send(req.isAuthenticated());
+  });
 };

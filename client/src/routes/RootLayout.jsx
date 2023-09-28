@@ -1,15 +1,22 @@
-import { Outlet, Link, Form } from "react-router-dom";
-import axios from "axios";
+import { Outlet, Link, Form, useLoaderData } from "react-router-dom";
 
 import styles from "../styles/rootLayout.module.css";
+import { authQuery, logout } from "../lib/auth";
 
-export const action = async () => {
+export const loader = (queryClient) => () => {
+  const query = authQuery();
+  return queryClient.ensureQueryData(query);
+};
+
+// logout action
+export const action = (queryClient) => async () => {
   try {
-    const response = await axios.post("/api/auth/logout");
-    if (response.status !== 200) {
-      return { error: response.statusText };
+    const response = await logout();
+    if (response.status == 200) {
+      await queryClient.invalidateQueries("isAuthenticated");
+      return response.data;
     } else {
-      return null;
+      return { error: response.statusText };
     }
   } catch (err) {
     console.error(err);
@@ -17,24 +24,35 @@ export const action = async () => {
 };
 
 export default function RootLayout() {
+  const { isAuthenticated } = useLoaderData();
+  console.log(isAuthenticated);
+
   return (
     <div className={styles.layout}>
       <header className={styles.header}>
         <Link to="/">
           <strong>E-Commerce App</strong>
         </Link>
+
+        {isAuthenticated && <p>Hello!</p>}
+
         <ul className={styles.auth}>
-          <li>
-            <Link to="login">Login</Link>
-          </li>
-          <li>
-            <Form method="post">
-              <button type="submit">Logout</button>
-            </Form>
-          </li>
-          <li>
-            <Link to="signup">Signup</Link>
-          </li>
+          {isAuthenticated ? (
+            <li>
+              <Form method="post">
+                <button type="submit">Logout</button>
+              </Form>
+            </li>
+          ) : (
+            <>
+              <li>
+                <Link to="login">Login</Link>
+              </li>
+              <li>
+                <Link to="signup">Signup</Link>
+              </li>
+            </>
+          )}
         </ul>
       </header>
 

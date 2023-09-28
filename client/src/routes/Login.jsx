@@ -1,17 +1,21 @@
-import { Form, useNavigation, useActionData, redirect } from "react-router-dom";
+import { Form, useNavigation, useActionData } from "react-router-dom";
 import { login } from "../lib/auth";
 
-export const action = async ({ request }) => {
-  try {
-    const formData = await request.formData();
-    const credentials = Object.fromEntries(formData);
-    await login(credentials);
-  } catch (err) {
-    console.error(err);
-  }
+export const action =
+  (queryClient) =>
+  async ({ request }) => {
+    try {
+      const formData = await request.formData();
+      const credentials = Object.fromEntries(formData);
+      const user = await login(credentials);
+      await queryClient.invalidateQueries("isAuthenticated");
+      return user;
+    } catch (err) {
+      console.error(err);
+    }
 
-  return redirect("/");
-};
+    return { error: "Unknown error" };
+  };
 
 export default function Login() {
   let navigation = useNavigation();

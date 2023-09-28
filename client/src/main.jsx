@@ -6,19 +6,30 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import "./styles/reset.css";
 
-import RootLayout, { action as logoutAction } from "./routes/RootLayout";
+import RootLayout, {
+  loader as authLoader,
+  action as logoutAction,
+} from "./routes/RootLayout";
 import Home, { loader as homeLoader } from "./routes/Home";
 import Product, { loader as productLoader } from "./routes/Product";
 import Login, { action as loginAction } from "./routes/Login";
 import Signup, { action as signupAction } from "./routes/Signup";
 
-const queryClient = new QueryClient(/** options */);
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000, // 1 second
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
-    action: logoutAction,
+    loader: authLoader(queryClient),
+    action: logoutAction(queryClient),
     children: [
       {
         index: true,
@@ -33,12 +44,12 @@ const router = createBrowserRouter([
       {
         path: "login",
         Component: Login,
-        action: loginAction,
+        action: loginAction(queryClient),
       },
       {
         path: "signup",
         Component: Signup,
-        action: signupAction,
+        action: signupAction(queryClient),
       },
     ],
   },

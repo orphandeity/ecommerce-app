@@ -1,20 +1,24 @@
 import { Form, useNavigation, useActionData, redirect } from "react-router-dom";
 import axios from "axios";
 
-export const action = async ({ request }) => {
-  try {
-    const formData = await request.formData();
-    const credentials = Object.fromEntries(formData);
-    const response = await axios.post("/api/auth/register", credentials);
-    if (response.status !== 200) {
-      return { error: response.statusText };
+export const action =
+  (queryClient) =>
+  async ({ request }) => {
+    try {
+      const formData = await request.formData();
+      const credentials = Object.fromEntries(formData);
+      const response = await axios.post("/api/auth/register", credentials);
+      if (response.status !== 200) {
+        return { error: response.statusText };
+      } else {
+        await queryClient.invalidateQueries("isAuthenticated");
+        return redirect("/");
+      }
+    } catch (err) {
+      console.error(err);
     }
-  } catch (err) {
-    console.error(err);
-  }
-
-  return redirect("/");
-};
+    return { error: "Unknown error" };
+  };
 
 export default function Signup() {
   let navigation = useNavigation();
