@@ -1,14 +1,11 @@
 import { Form, useNavigation, useActionData, redirect } from "react-router-dom";
-import axios from "axios";
+import { login } from "../lib/auth";
 
 export const action = async ({ request }) => {
   try {
     const formData = await request.formData();
     const credentials = Object.fromEntries(formData);
-    const response = await axios.post("/api/auth/login", credentials);
-    if (response.status !== 200) {
-      return { error: response.statusText };
-    }
+    await login(credentials);
   } catch (err) {
     console.error(err);
   }

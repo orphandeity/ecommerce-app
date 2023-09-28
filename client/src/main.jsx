@@ -6,7 +6,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import "./styles/reset.css";
 
-import RootLayout, { loader as userLoader } from "./routes/RootLayout";
+import RootLayout, { action as logoutAction } from "./routes/RootLayout";
 import Home, { loader as homeLoader } from "./routes/Home";
 import Product, { loader as productLoader } from "./routes/Product";
 import Login, { action as loginAction } from "./routes/Login";
@@ -17,8 +17,8 @@ const queryClient = new QueryClient(/** options */);
 const router = createBrowserRouter([
   {
     path: "/",
-    loader: userLoader(queryClient),
     Component: RootLayout,
+    action: logoutAction,
     children: [
       {
         index: true,
