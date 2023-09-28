@@ -9,11 +9,7 @@ export const loader =
   (queryClient) =>
   async ({ params }) => {
     const query = productDetailQuery(params.id);
-
-    return (
-      queryClient.getQueryData(query.queryKey) ??
-      (await queryClient.fetchQuery(query))
-    );
+    return queryClient.ensureQueryData(query);
   };
 
 export default function Product() {
