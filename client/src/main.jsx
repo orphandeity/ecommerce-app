@@ -6,7 +6,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import "./styles/reset.css";
 
-import RootLayout from "./routes/RootLayout";
+import RootLayout, { loader as userLoader } from "./routes/RootLayout";
 import Home, { loader as homeLoader } from "./routes/Home";
 import Product, { loader as productLoader } from "./routes/Product";
 import Login, { action as loginAction } from "./routes/Login";
@@ -17,27 +17,28 @@ const queryClient = new QueryClient(/** options */);
 const router = createBrowserRouter([
   {
     path: "/",
+    loader: userLoader(queryClient),
     Component: RootLayout,
     children: [
       {
         index: true,
-        loader: homeLoader(queryClient),
         Component: Home,
+        loader: homeLoader(queryClient),
       },
       {
         path: "products/:id",
-        loader: productLoader(queryClient),
         Component: Product,
+        loader: productLoader(queryClient),
       },
       {
         path: "login",
-        action: loginAction,
         Component: Login,
+        action: loginAction,
       },
       {
         path: "signup",
-        action: signupAction,
         Component: Signup,
+        action: signupAction,
       },
     ],
   },

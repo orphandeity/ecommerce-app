@@ -1,22 +1,30 @@
-import { useEffect } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useLoaderData } from "react-router-dom";
+import axios from "axios";
+
 import styles from "../styles/rootLayout.module.css";
 
-import Cookies from "js-cookie";
+const userQuery = () => ({
+  queryKey: ["user"],
+  queryFn: () => axios("/api/user").then((res) => res.data),
+});
+
+export const loader = (queryClient) => async () => {
+  const query = userQuery();
+  return queryClient.ensureQueryData(query);
+};
 
 export default function RootLayout() {
-  useEffect(() => {
-    const cookies = Cookies.get("session");
+  const user = useLoaderData();
+  console.log("root layout user: ", user);
 
-    if (cookies) console.log("cookies: ", cookies);
-    else console.log("no cookies");
-  }, []);
   return (
     <div className={styles.layout}>
       <header className={styles.header}>
         <Link to="/">
           <strong>E-Commerce App</strong>
         </Link>
+
+        <p>Hello, {user.username}!</p>
 
         <ul className={styles.auth}>
           <li>
