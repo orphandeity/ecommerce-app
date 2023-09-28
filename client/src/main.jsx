@@ -12,20 +12,12 @@ import Product, { loader as productLoader } from "./routes/Product";
 import Login, { action as loginAction } from "./routes/Login";
 import Signup, { action as signupAction } from "./routes/Signup";
 
-const queryClient = new QueryClient(/**{
-  defaultOptions: {
-    queries: {
-      staleTime: 1000, // 1 second
-      refetchOnWindowFocus: false,
-    },
-  },
-}*/);
+const queryClient = new QueryClient(/** options */);
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
-    // loader: authLoader(queryClient),
     action: logoutAction(queryClient),
     children: [
       {

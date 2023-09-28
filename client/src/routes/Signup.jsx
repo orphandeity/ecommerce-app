@@ -1,19 +1,16 @@
 import { Form, useNavigation, useActionData, redirect } from "react-router-dom";
-import axios from "axios";
+import { register } from "../lib/auth";
 
 export const action =
   (queryClient) =>
   async ({ request }) => {
     try {
-      const formData = await request.formData();
-      const credentials = Object.fromEntries(formData);
-      const response = await axios.post("/api/auth/register", credentials);
-      if (response.status !== 200) {
-        return { error: response.statusText };
-      } else {
-        queryClient.invalidateQueries({ queryKey: ["isAuthenticated"] });
-        return redirect("/");
-      }
+      let formData = await request.formData();
+      let credentials = Object.fromEntries(formData);
+      let response = await register(credentials);
+      if (response.status != 200) return { error: response.statusText };
+      queryClient.invalidateQueries({ queryKey: ["isAuthenticated"] });
+      return redirect("/");
     } catch (err) {
       console.error(err);
     }

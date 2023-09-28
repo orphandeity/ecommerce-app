@@ -1,5 +1,13 @@
 import axios from "axios";
 
+export async function register(credentials) {
+  try {
+    return await axios.post("/api/auth/register", credentials);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 export async function login(credentials) {
   try {
     return await axios.post("/api/auth/login", credentials);
