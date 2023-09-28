@@ -1,14 +1,9 @@
-import { useLoaderData, Link } from "react-router-dom";
-import axios from "axios";
-
-const productListQuery = () => ({
-  queryKey: ["products"],
-  queryFn: () => axios("/api/products").then((res) => res.data),
-});
+import { useLoaderData } from "react-router-dom";
+import { getAllProductsQuery } from "../lib/product";
+import ProductList from "../components/ProductList";
 
 export const loader = (queryClient) => async () => {
-  const query = productListQuery();
-  return queryClient.ensureQueryData(query);
+  return queryClient.ensureQueryData(getAllProductsQuery());
 };
 
 function Home() {
@@ -17,15 +12,7 @@ function Home() {
   return (
     <>
       <h1>Home Page</h1>
-      <ul>
-        {products.map((product) => {
-          return (
-            <li key={product.id}>
-              <Link to={`/products/${product.id}`}>{product.name}</Link>
-            </li>
-          );
-        })}
-      </ul>
+      <ProductList products={products} />
     </>
   );
 }
