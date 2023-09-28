@@ -1,6 +1,7 @@
 import { Outlet, redirect } from "react-router-dom";
 import { logout } from "../lib/auth";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 import styles from "../styles/rootLayout.module.css";
 
@@ -23,10 +24,7 @@ export default function RootLayout() {
       <div className={styles.content}>
         <Outlet />
       </div>
-
-      <footer className={styles.footer}>
-        <small>created by orphandeity</small>
-      </footer>
+      <Footer />
     </div>
   );
 }
