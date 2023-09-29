@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { authQuery } from "../lib/auth";
 
 import styles from "../styles/header.module.css";
+import { ShoppingBag } from "lucide-react";
 
 export default function Header() {
   const { data } = useQuery(authQuery());
@@ -18,11 +19,16 @@ export default function Header() {
 
       <ul className={styles.auth}>
         {isLoggedIn ? (
-          <li>
-            <Form method="post">
-              <button type="submit">Logout</button>
-            </Form>
-          </li>
+          <>
+            <li>
+              <ShoppingBag />
+            </li>
+            <li>
+              <Form method="post">
+                <button type="submit">Logout</button>
+              </Form>
+            </li>
+          </>
         ) : (
           <>
             <li>
