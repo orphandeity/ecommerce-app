@@ -3,7 +3,6 @@ import axios from "axios";
 async function getProducts() {
   try {
     let response = await axios("/api/products");
-    console.log(response);
     let products = response.data;
     return products;
   } catch (err) {

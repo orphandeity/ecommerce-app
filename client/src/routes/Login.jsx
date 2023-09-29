@@ -1,4 +1,10 @@
-import { Form, useNavigation, useActionData, redirect } from "react-router-dom";
+import {
+  Form,
+  Link,
+  useNavigation,
+  useActionData,
+  redirect,
+} from "react-router-dom";
 import { login } from "../lib/auth";
 
 export const action =
@@ -23,21 +29,27 @@ export default function Login() {
   let isLoggingIn = navigation.formData?.get("username") != null;
 
   let actionData = useActionData();
-  console.log(actionData);
+
+  const formStyles = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+    marginTop: "4rem",
+  };
 
   return (
-    <div style={{ display: "grid", placeItems: "center" }}>
-      <Form
-        method="post"
-        replace
-        style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-      >
+    <div
+      style={{ display: "grid", placeItems: "center", gap: "var(--padding)" }}
+    >
+      <Form method="post" replace style={formStyles}>
         <h1>Login</h1>
         <label>
-          Username: <input name="username" type="text" />
+          Username:{" "}
+          <input name="username" type="text" min={3} max={20} required />
         </label>
         <label>
-          Password: <input name="password" type="password" />
+          Password:{" "}
+          <input name="password" type="password" pattern="\w{8, 20}" required />
         </label>
         <button type="submit" disabled={isLoggingIn}>
           {isLoggingIn ? "Logging in..." : "Log in"}
@@ -46,6 +58,9 @@ export default function Login() {
           <p style={{ color: "red" }}>{actionData.error}</p>
         ) : null}
       </Form>
+      <p>
+        Don&apos;t have an account? <Link to="/signup">Sign up</Link>
+      </p>
     </div>
   );
 }

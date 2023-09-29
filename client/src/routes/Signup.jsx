@@ -1,4 +1,10 @@
-import { Form, useNavigation, useActionData, redirect } from "react-router-dom";
+import {
+  Form,
+  Link,
+  useNavigation,
+  useActionData,
+  redirect,
+} from "react-router-dom";
 import { register } from "../lib/auth";
 
 export const action =
@@ -23,13 +29,18 @@ export default function Signup() {
 
   let actionData = useActionData();
 
+  const formStyles = {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+    marginTop: "4rem",
+  };
+
   return (
-    <div style={{ display: "grid", placeItems: "center" }}>
-      <Form
-        method="post"
-        replace
-        style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-      >
+    <div
+      style={{ display: "grid", placeItems: "center", gap: "var(--padding)" }}
+    >
+      <Form method="post" replace style={formStyles}>
         <h1>Sign up</h1>
         <label>
           Username: <input name="username" type="text" />
@@ -44,6 +55,9 @@ export default function Signup() {
           <p style={{ color: "red" }}>{actionData.error}</p>
         ) : null}
       </Form>
+      <p>
+        Already have an account? <Link to="/login">Log in</Link>
+      </p>
     </div>
   );
 }
