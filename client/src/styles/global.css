@@ -1,25 +1,34 @@
 :root {
-  --color-stone-50: #fafaf9;
-  --color-stone-100: #f5f5f4;
-  --color-stone-200: #e7e5e4;
-  --color-stone-300: #d6d3d1;
-  --color-stone-400: #a8a29e;
-  --color-stone-500: #78716c;
-  --color-stone-600: #57534e;
-  --color-stone-700: #44403c;
-  --color-stone-800: #292524;
-  --color-stone-900: #1c1917;
-  --color-stone-950: #0c0a09;
+  --color-alpha-05: 0.05;
+  --color-alpha-20: 0.2;
+  --color-stone-50: hsl(60, 9%, 98%);
+  --color-stone-100: hsl(60, 5%, 96%);
+  --color-stone-200: hsl(20, 6%, 90%);
+  --color-stone-300: hsl(24, 6%, 83%);
+  --color-stone-400: hsl(24, 5%, 64%);
+  --color-stone-500: hsl(25, 5%, 45%);
+  --color-stone-600: hsl(33, 5%, 32%);
+  --color-stone-700: hsl(30, 6%, 25%);
+  --color-stone-800: hsl(12, 6%, 15%);
+  --color-stone-900: hsl(24, 10%, 10%);
+  --color-stone-900-05: hsla(24, 10%, 10%, var(--color-alpha-05));
+  --color-stone-900-20: hsla(24, 10%, 10%, var(--color-alpha-20));
+  --color-stone-950: hsl(20, 14%, 4%);
 
-  --background-color: var(--color-stone-50);
+  --background-color: var(--color-stone-100);
+  --background-secondary-color: var(--color-stone-50);
   --foreground-color: var(--color-stone-900);
 
   --border-color: var(--color-stone-300);
-  --border-radius: 0.25rem;
+  --border-radius: 0.5rem;
 
   --on-hover-color: var(--color-stone-500);
 
   --padding: 1rem;
+
+  --shadow-color: var(--color-stone-900-20);
+  --shadow: 0 0.5rem 1rem var(--shadow-color);
+  --shadow-outline-color: var(--color-stone-900-05);
 
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;

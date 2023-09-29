@@ -1,16 +1,11 @@
 import { useLoaderData } from "react-router-dom";
-import axios from "axios";
-
-const productDetailQuery = (id) => ({
-  queryKey: ["products", id],
-  queryFn: () => axios(`/api/products/${id}`).then((res) => res.data),
-});
+import { getProductByIdQuery } from "../lib/product";
+import ProductDetail from "../components/ProductDetail";
 
 export const loader =
   (queryClient) =>
   async ({ params }) => {
-    const query = productDetailQuery(params.id);
-    return queryClient.ensureQueryData(query);
+    return queryClient.ensureQueryData(getProductByIdQuery(params.id));
   };
 
 export default function Product() {
@@ -18,10 +13,8 @@ export default function Product() {
 
   return (
     <>
-      <h1>Product Page</h1>
-      <h2>{product.name}</h2>
-      <p>{product.description}</p>
-      <p>{product.price_usd}</p>
+      <h1>Product Detail Page</h1>
+      <ProductDetail product={product} />
     </>
   );
 }
