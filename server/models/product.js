@@ -17,6 +17,22 @@ class ProductModel {
     }
   }
 
+  async findById(id) {
+    try {
+      const statement = `SELECT * FROM products WHERE id = $1`;
+      const values = [id];
+      const result = await db.query(statement, values);
+
+      if (result.rows.length) {
+        return result.rows[0];
+      } else {
+        return null;
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async findByCategoryId(categoryId) {
     try {
       const statement = `SELECT * FROM products
@@ -38,19 +54,18 @@ class ProductModel {
     }
   }
 
-  async findById(id) {
+  async findCategories() {
     try {
-      const statement = `SELECT * FROM products WHERE id = $1`;
-      const values = [id];
-      const result = await db.query(statement, values);
+      const statement = `SELECT * FROM categories`;
+      const result = await db.query(statement);
 
       if (result.rows.length) {
-        return result.rows[0];
+        return result.rows;
       } else {
-        return null;
+        return [];
       }
     } catch (err) {
-      throw err;
+      throw new err();
     }
   }
 }

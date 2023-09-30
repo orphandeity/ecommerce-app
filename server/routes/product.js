@@ -9,6 +9,15 @@ const router = express.Router();
 module.exports = (app) => {
   app.use("/api/products", router);
 
+  router.get("/categories", async (req, res, next) => {
+    try {
+      const categories = await productService.findCategories();
+      res.status(200).json(categories);
+    } catch (err) {
+      next(err);
+    }
+  });
+
   router.get(
     "/",
     [query("categoryId").isInt().toInt().optional(), validate],

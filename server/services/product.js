@@ -6,14 +6,19 @@ class ProductService {
     return products;
   }
 
+  async findById(id) {
+    const product = await productModel.findById(id);
+    return product;
+  }
+
   async findByCategoryId(categoryId) {
     const products = await productModel.findByCategoryId(categoryId);
     return products;
   }
 
-  async findById(id) {
-    const product = await productModel.findById(id);
-    return product;
+  async findCategories() {
+    const categories = await productModel.findCategories();
+    return categories;
   }
 }
 
