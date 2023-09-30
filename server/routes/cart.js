@@ -36,22 +36,30 @@ module.exports = (app) => {
   });
 
   // add item to cart
-  // looks for cart by user id and creates new cartItem with cart id and product id
+  // looks for cart by user id and adds item to cart
+  // if cart doesn't exist, creates new cart and adds item to cart
   router.post(
     "/items",
     [authenticate, body("productId").isInt().toInt(), validate],
     async (req, res, next) => {
-      const { productId } = matchedData(req);
+      let { productId } = matchedData(req);
       try {
-        const cart = await CartService.findByUserId(req.user.id);
+        let cart = await CartService.findByUserId(req.user.id);
         if (cart) {
-          const item = await CartService.addItem({
+          let item = await CartService.addItem({
             cartId: cart.id,
             productId,
           });
+
           res.status(201).json(item);
         } else {
-          res.status(404).json({ message: "Not found" });
+          let newCart = await CartService.create(req.user.id);
+          let item = await CartService.addItem({
+            cartId: newCart.id,
+            productId,
+          });
+
+          res.status(201).json(item);
         }
       } catch (err) {
         next(err);
