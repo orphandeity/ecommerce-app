@@ -8,7 +8,10 @@ import "./styles/reset.css";
 import "./styles/global.css";
 
 import RootLayout, { action as logoutAction } from "./routes/RootLayout";
-import Home, { loader as homeLoader } from "./routes/Home";
+import Home, {
+  loader as homeLoader,
+  action as homeAction,
+} from "./routes/Home";
 import Product, { loader as productLoader } from "./routes/Product";
 import Login, { action as loginAction } from "./routes/Login";
 import Signup, { action as signupAction } from "./routes/Signup";
@@ -25,6 +28,7 @@ const router = createBrowserRouter([
         index: true,
         Component: Home,
         loader: homeLoader(queryClient),
+        action: homeAction(queryClient),
       },
       {
         path: "products/:id",
