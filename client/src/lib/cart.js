@@ -10,18 +10,10 @@ async function getCart() {
   }
 }
 
-async function createCart() {
+export async function addToCart(productId) {
   try {
-    let response = await axios.post("/api/cart");
-    return response.data;
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-async function addToCart() {
-  try {
-    let response = await axios.post("/api/cart/items");
+    let response = await axios.post("/api/cart/items", { productId });
+    console.log("response ", response);
     return response.data;
   } catch (err) {
     console.error(err);
@@ -31,16 +23,4 @@ async function addToCart() {
 export const getCartQuery = () => ({
   queryKey: ["cart"],
   queryFn: getCart,
-});
-
-export const createCartMutation = () => ({
-  mutationKey: ["cart"],
-  mutationFn: createCart,
-  invalidateQueryKeys: ["cart"],
-});
-
-export const addToCartMutation = () => ({
-  mutationKey: ["cart", "items"],
-  mutationFn: addToCart,
-  invalidateQueryKeys: ["cart"],
 });

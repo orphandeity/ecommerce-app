@@ -5,26 +5,26 @@ import { ShoppingCart } from "lucide-react";
 function Cart() {
   const { data: cart } = useQuery(getCartQuery());
 
-  if (cart && cart.items) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <ShoppingCart />
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <ShoppingCart />
+      {cart && cart.items ? (
         <ul>
           {cart.items.map((item) => (
-            <li key={item.id}>{item.name}</li>
+            <li key={item.id}>{item.product_id}</li>
           ))}
         </ul>
-      </div>
-    );
-  } else {
-    return null;
-  }
+      ) : (
+        <p>Cart is empty</p>
+      )}
+    </div>
+  );
 }
 
 export default Cart;
