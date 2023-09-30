@@ -12,6 +12,14 @@ function Home() {
   return (
     <>
       <h1>Home Page</h1>
+      <h2>Categories</h2>
+      <ul>
+        <li>Category 1</li>
+        <li>Category 2</li>
+        <li>Category 3</li>
+        <li>Category 4</li>
+        <li>Category 5</li>
+      </ul>
       <ProductList products={products} />
     </>
   );
