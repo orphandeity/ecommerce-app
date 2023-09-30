@@ -37,7 +37,7 @@ export default function ProductList({ products }) {
   if (!products) return null;
   return (
     <div>
-      <h2>Products</h2>
+      <h2>Product List</h2>
       <ul
         style={{
           listStyle: "none",

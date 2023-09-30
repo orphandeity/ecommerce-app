@@ -13,7 +13,7 @@ export default function Product() {
 
   return (
     <>
-      <h1>Product Detail Page</h1>
+      <h1>Product Page</h1>
       <ProductDetail product={product} />
     </>
   );
