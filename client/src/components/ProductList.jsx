@@ -63,7 +63,7 @@ export default function ProductList({ products }) {
 ProductCard.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
+  price: PropTypes.string.isRequired,
 };
 
 ProductList.propTypes = {
@@ -71,7 +71,7 @@ ProductList.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
-      price_usd: PropTypes.number.isRequired,
+      price_usd: PropTypes.string.isRequired,
     })
   ).isRequired,
 };

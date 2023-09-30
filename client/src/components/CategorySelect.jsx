@@ -17,10 +17,8 @@ function CategorySelect({ categories }) {
           style={{ display: "flex", gap: "1rem", padding: "var(--padding) 0" }}
         >
           <strong>Categories</strong>
-          <select name="categoryId">
-            <option value={0} selected>
-              All products
-            </option>
+          <select name="categoryId" defaultValue={0}>
+            <option value={0}>All products</option>
             {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
