@@ -1,14 +1,11 @@
-import {
-  Form,
-  useActionData,
-  useLoaderData,
-  useSubmit,
-} from "react-router-dom";
+import { useActionData, useLoaderData } from "react-router-dom";
 import {
   getAllCategoriesQuery,
   getAllProductsQuery,
   getProductsByCategoryIdQuery,
 } from "../lib/product";
+
+import CategorySelect from "../components/CategorySelect";
 import ProductList from "../components/ProductList";
 
 export const loader = (queryClient) => async () => {
@@ -36,29 +33,11 @@ export const action =
 function Home() {
   let { categories, products } = useLoaderData();
   let actionData = useActionData();
-  let submit = useSubmit();
 
   return (
     <>
       <h1>Home Page</h1>
-      <h2>Categories</h2>
-      <Form
-        method="post"
-        onChange={(event) => {
-          submit(event.currentTarget);
-        }}
-      >
-        <select name="categoryId">
-          <option value={0} selected>
-            All products
-          </option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-      </Form>
+      <CategorySelect categories={categories} />
       <ProductList products={actionData ? actionData.products : products} />
     </>
   );
