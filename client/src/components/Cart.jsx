@@ -5,6 +5,8 @@ import { ShoppingCart } from "lucide-react";
 function Cart() {
   const { data: cart } = useQuery(getCartQuery());
 
+  console.log(cart);
+
   return (
     <div
       style={{
@@ -15,11 +17,14 @@ function Cart() {
     >
       <ShoppingCart />
       {cart && cart.items ? (
-        <ul>
+        <dl>
           {cart.items.map((item) => (
-            <li key={item.id}>{item.product_id}</li>
+            <div key={item.id} style={{ display: "flex", gap: "1rem" }}>
+              <dt>{item.name}</dt>
+              <dd>{item.price_usd}</dd>
+            </div>
           ))}
-        </ul>
+        </dl>
       ) : (
         <p>Cart is empty</p>
       )}

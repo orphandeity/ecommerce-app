@@ -19,7 +19,13 @@ module.exports = class CartItemModel {
 
   static async findByCartId(cartId) {
     try {
-      const statement = `SELECT * FROM cart_items WHERE cart_id = $1`;
+      // const statement = `SELECT * FROM cart_items WHERE cart_id = $1`;
+      const statement = `
+        SELECT p.id, p.name, p.description, p.price_usd
+        FROM cart_items ci
+        JOIN products p ON ci.product_id = p.id
+        WHERE ci.cart_id = $1
+      `;
       const values = [cartId];
       const result = await db.query(statement, values);
 
