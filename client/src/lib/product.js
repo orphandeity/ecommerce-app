@@ -30,6 +30,16 @@ async function getProductsByCategoryId(id) {
   }
 }
 
+async function getCategories() {
+  try {
+    let response = await axios("/api/products/categories");
+    let categories = response.data;
+    return categories;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 export const getAllProductsQuery = () => ({
   queryKey: ["products"],
   queryFn: getProducts,
@@ -43,4 +53,9 @@ export const getProductByIdQuery = (id) => ({
 export const getProductsByCategoryIdQuery = (id) => ({
   queryKey: ["products", { categoryId: id }],
   queryFn: () => getProductsByCategoryId(id),
+});
+
+export const getAllCategoriesQuery = () => ({
+  queryKey: ["categories"],
+  queryFn: getCategories,
 });
