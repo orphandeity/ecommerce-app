@@ -8,7 +8,7 @@ function CartItems({ products }) {
   const { isLoading, mutate } = useMutation({
     mutationFn: removeFromCart,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      queryClient.invalidateQueries({ queryKey: ["cart", "items"] });
     },
   });
 
@@ -21,17 +21,20 @@ function CartItems({ products }) {
         width: "50%",
       }}
     >
-      {products.map((product, idx) => (
+      {products.map((item) => (
         <div
-          key={idx}
+          key={item.cart_item_id}
           style={{
             display: "grid",
             gridTemplateColumns: "2fr 1fr 1fr",
           }}
         >
-          <dt>{product.name}</dt>
-          <dd>{product.price_usd}</dd>
-          <button onClick={() => mutate(product.id)} disabled={isLoading}>
+          <dt>{item.name}</dt>
+          <dd>{item.price_usd}</dd>
+          <button
+            onClick={() => mutate(item.cart_item_id)}
+            disabled={isLoading}
+          >
             Remove item
           </button>
         </div>
@@ -43,7 +46,7 @@ function CartItems({ products }) {
 CartItems.propTypes = {
   products: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      cart_item_id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
       price_usd: PropTypes.string.isRequired,
     })

@@ -21,7 +21,7 @@ module.exports = class CartItemModel {
     try {
       // const statement = `SELECT * FROM cart_items WHERE cart_id = $1`;
       const statement = `
-        SELECT p.id, p.name, p.description, p.price_usd
+        SELECT ci.id AS cart_item_id, p.name, p.description, p.price_usd
         FROM cart_items ci
         JOIN products p ON ci.product_id = p.id
         WHERE ci.cart_id = $1

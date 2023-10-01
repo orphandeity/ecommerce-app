@@ -19,6 +19,15 @@ export async function addToCart(productId) {
   }
 }
 
+export async function removeFromCart(productId) {
+  try {
+    let response = await axios.delete(`/api/cart/items/${productId}`);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 export const getCartQuery = () => ({
   queryKey: ["cart"],
   queryFn: getCart,
