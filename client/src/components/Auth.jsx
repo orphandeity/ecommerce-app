@@ -18,7 +18,7 @@ function Auth() {
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "1rem",
+          gap: "2rem",
           listStyle: "none",
         }}
       >

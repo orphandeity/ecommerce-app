@@ -1,17 +1,26 @@
 import { Link } from "react-router-dom";
+import { ShoppingBag } from "lucide-react";
 import Auth from "./Auth";
-
-import styles from "../styles/header.module.css";
-import Cart from "./Cart";
 
 export default function Header() {
   return (
-    <header className={styles.header}>
+    <header
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingBottom: "var(--padding)",
+      }}
+    >
       <Link to="/">
         <strong>E-Commerce App</strong>
       </Link>
-      <Cart />
-      <Auth />
+      <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
+        <Link to="/cart">
+          <ShoppingBag />
+        </Link>
+        <Auth />
+      </div>
     </header>
   );
 }
