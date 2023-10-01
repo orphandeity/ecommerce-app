@@ -14,7 +14,7 @@ import Home, {
 } from "./routes/Home";
 import Product, { loader as productLoader } from "./routes/Product";
 import Login, { action as loginAction } from "./routes/Login";
-import Cart, { loader as cartLoader } from "./routes/Cart";
+import Cart from "./routes/Cart";
 import Signup, { action as signupAction } from "./routes/Signup";
 
 const queryClient = new QueryClient(/** options */);
@@ -39,7 +39,6 @@ const router = createBrowserRouter([
       {
         path: "cart",
         Component: Cart,
-        loader: cartLoader(queryClient),
       },
       {
         path: "login",
