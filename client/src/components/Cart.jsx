@@ -5,8 +5,6 @@ import { ShoppingCart } from "lucide-react";
 function Cart() {
   const { data: cart } = useQuery(getCartQuery());
 
-  console.log(cart);
-
   return (
     <div
       style={{
