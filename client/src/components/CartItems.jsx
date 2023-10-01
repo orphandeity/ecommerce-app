@@ -1,6 +1,17 @@
 import PropTypes from "prop-types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { removeFromCart } from "../lib/cart";
 
 function CartItems({ products }) {
+  const queryClient = useQueryClient();
+
+  const { isLoading, mutate } = useMutation({
+    mutationFn: removeFromCart,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+  });
+
   return (
     <dl
       style={{
@@ -10,9 +21,9 @@ function CartItems({ products }) {
         width: "50%",
       }}
     >
-      {products.map((product) => (
+      {products.map((product, idx) => (
         <div
-          key={product.id}
+          key={idx}
           style={{
             display: "grid",
             gridTemplateColumns: "2fr 1fr 1fr",
@@ -20,7 +31,9 @@ function CartItems({ products }) {
         >
           <dt>{product.name}</dt>
           <dd>{product.price_usd}</dd>
-          <button>Remove item</button>
+          <button onClick={() => mutate(product.id)} disabled={isLoading}>
+            Remove item
+          </button>
         </div>
       ))}
     </dl>
