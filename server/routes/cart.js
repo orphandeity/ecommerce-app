@@ -25,8 +25,22 @@ module.exports = (app) => {
     try {
       const cart = await CartService.findByUserId(req.user.id);
       if (cart) {
+        res.status(200).json({ cart });
+      } else {
+        res.status(404).json({ message: "Not found" });
+      }
+    } catch (err) {
+      next(err);
+    }
+  });
+
+  // get cart items
+  router.get("/items", [authenticate], async (req, res, next) => {
+    try {
+      const cart = await CartService.findByUserId(req.user.id);
+      if (cart) {
         const items = await CartService.findItems(cart.id);
-        res.status(200).json({ ...cart, items });
+        res.status(200).json(items);
       } else {
         res.status(404).json({ message: "Not found" });
       }
