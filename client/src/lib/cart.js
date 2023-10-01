@@ -10,6 +10,16 @@ async function getCart() {
   }
 }
 
+async function getCartItems() {
+  try {
+    let response = await axios.get("/api/cart/items");
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+}
+
 export async function addToCart(productId) {
   try {
     let response = await axios.post("/api/cart/items", { productId });
@@ -31,4 +41,9 @@ export async function removeFromCart(productId) {
 export const getCartQuery = () => ({
   queryKey: ["cart"],
   queryFn: getCart,
+});
+
+export const getCartItemsQuery = () => ({
+  queryKey: ["cart", "items"],
+  queryFn: getCartItems,
 });
