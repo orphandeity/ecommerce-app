@@ -2,7 +2,7 @@ const express = require("express");
 const { body, matchedData } = require("express-validator");
 const { authenticate, validate } = require("../middleware");
 
-const userService = require("../services/user");
+const AuthService = require("../services/authService");
 
 const router = express.Router();
 
@@ -22,21 +22,11 @@ module.exports = (app, passport) => {
     async (req, res, next) => {
       const { username, password } = matchedData(req);
       try {
-        // Check if username already exists
-        const user = await userService.findByUsername(username);
-        if (user) {
-          return res.status(400).send({
-            status: "error",
-            message: "Username already exists",
-          });
-        } else {
-          // Create new user
-          const newUser = await userService.create(username, password);
-          req.login(newUser, (err) => {
-            if (err) return next(err);
-            return res.status(200).send(newUser);
-          });
-        }
+        let user = await AuthService.register({ username, password });
+        req.login(user, (err) => {
+          if (err) return next(err);
+          return res.status(200).send(user);
+        });
       } catch (err) {
         next(err);
       }
