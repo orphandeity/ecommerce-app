@@ -16,6 +16,10 @@ export async function login(credentials) {
   }
 }
 
+export function loginWithGoogle() {
+  return window.open("/api/auth/google", "_self");
+}
+
 export async function logout() {
   try {
     return await axios.post("/api/auth/logout");
@@ -34,7 +38,6 @@ async function isAuthenticated() {
   }
 }
 
-// React Query Query Keys
 export const authQuery = () => ({
   queryKey: ["isAuthenticated"],
   queryFn: isAuthenticated,

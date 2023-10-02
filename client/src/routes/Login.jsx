@@ -6,6 +6,7 @@ import {
   redirect,
 } from "react-router-dom";
 import { login } from "../lib/auth";
+import GoogleLogin from "../components/GoogleLogin";
 
 export const action =
   (queryClient) =>
@@ -39,28 +40,36 @@ export default function Login() {
 
   return (
     <div
-      style={{ display: "grid", placeItems: "center", gap: "var(--padding)" }}
+      style={{
+        display: "grid",
+        placeItems: "center",
+      }}
     >
-      <Form method="post" replace style={formStyles}>
+      <div
+        style={{
+          display: "grid",
+          justifyContent: "center",
+          gap: "1rem",
+        }}
+      >
         <h1>Login</h1>
-        <label>
-          Username:{" "}
+        <Form method="post" replace style={formStyles}>
+          <label>Username</label>
           <input name="username" type="text" min={3} max={20} required />
-        </label>
-        <label>
-          Password:{" "}
+          <label>Password</label>
           <input name="password" type="password" pattern="\w{8, 20}" required />
-        </label>
-        <button type="submit" disabled={isLoggingIn}>
-          {isLoggingIn ? "Logging in..." : "Log in"}
-        </button>
-        {actionData && actionData.error ? (
-          <p style={{ color: "red" }}>{actionData.error}</p>
-        ) : null}
-      </Form>
-      <p>
-        Don&apos;t have an account? <Link to="/signup">Sign up</Link>
-      </p>
+          <button type="submit" disabled={isLoggingIn}>
+            {isLoggingIn ? "Logging in..." : "Log in"}
+          </button>
+          {actionData && actionData.error ? (
+            <p style={{ color: "red" }}>{actionData.error}</p>
+          ) : null}
+        </Form>
+        <GoogleLogin />
+        <p>
+          Don&apos;t have an account? <Link to="/signup">Sign up</Link>
+        </p>
+      </div>
     </div>
   );
 }
