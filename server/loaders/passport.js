@@ -39,7 +39,7 @@ module.exports = (app) => {
       {
         clientID: GOOGLE.CLIENT_ID,
         clientSecret: GOOGLE.CLIENT_SECRET,
-        callbackURL: GOOGLE.CALLBACK_URL,
+        callbackURL: GOOGLE.REDIRECT_URI,
       },
       async (accessToken, refreshToken, profile, cb) => {
         try {
