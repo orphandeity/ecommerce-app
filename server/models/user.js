@@ -3,10 +3,11 @@ const db = require("../db");
 class UserModel {
   async create(data) {
     if (data.google) {
+      let username = data.google.displayName;
       let googleData = JSON.stringify(data.google);
       try {
-        let statement = `INSERT INTO users (google) VALUES ($1) RETURNING *`;
-        let values = [googleData];
+        let statement = `INSERT INTO users (username, google) VALUES ($1, $2) RETURNING *`;
+        let values = [username, googleData];
         let result = await db.query(statement, values);
 
         if (result.rows.length) {
