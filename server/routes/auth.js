@@ -60,7 +60,7 @@ module.exports = (app, passport) => {
   router.get(
     "/google/redirect",
     passport.authenticate("google", {
-      successReturnToOrRedirect: "/",
+      successRedirect: "/",
       failureRedirect: "/login",
     })
   );

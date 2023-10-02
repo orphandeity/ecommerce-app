@@ -41,13 +41,12 @@ class AuthService {
     try {
       // check if user exists
       let user = await UserModel.findByGoogleId(id);
-
       // if not, create user
       if (!user) {
         return await UserModel.create({ google: { id, displayName } });
+      } else {
+        return user;
       }
-      // return user
-      return user;
     } catch (err) {
       console.error(err);
       throw new Error("Failed to login with Google");
