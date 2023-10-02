@@ -1,21 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCartItemsQuery, removeFromCart } from "../lib/cart";
+import { getCartQuery, removeFromCart } from "../lib/cart";
 
 function Cart() {
   const queryClient = useQueryClient();
-  const { data: items } = useQuery(getCartItemsQuery());
+  const { data: cart } = useQuery(getCartQuery());
 
   const { mutate: removeItem } = useMutation({
     mutationFn: removeFromCart,
     onSuccess: () => {
-      queryClient.invalidateQueries(getCartItemsQuery());
+      queryClient.invalidateQueries(getCartQuery());
     },
   });
 
   return (
     <div>
       <strong>Cart</strong>
-      {items ? (
+      {cart && cart.items ? (
         <dl
           style={{
             display: "flex",
@@ -24,7 +24,7 @@ function Cart() {
             width: "50%",
           }}
         >
-          {items.map((item) => (
+          {cart.items.map((item) => (
             <div
               key={item.cart_item_id}
               style={{

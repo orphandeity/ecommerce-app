@@ -4,8 +4,8 @@ const CartItemModel = require("../models/cartItem");
 const OrderModel = require("../models/order");
 const OrderItemModel = require("../models/orderItem");
 
-module.exports = class CartService {
-  static async create(userId) {
+class CartService {
+  async create(userId) {
     try {
       const cart = await CartModel.create(userId);
       return cart;
@@ -14,7 +14,7 @@ module.exports = class CartService {
     }
   }
 
-  static async findByUserId(userId) {
+  async findByUserId(userId) {
     try {
       const cart = await CartModel.findByUserId(userId);
       return cart;
@@ -23,7 +23,7 @@ module.exports = class CartService {
     }
   }
 
-  static async findById(cartId) {
+  async findById(cartId) {
     try {
       const cart = await CartModel.findById(cartId);
       return cart;
@@ -32,16 +32,23 @@ module.exports = class CartService {
     }
   }
 
-  static async delete(id) {
+  // load cart with items
+  async loadCart(userId) {
     try {
-      const cart = await CartModel.delete(id);
-      return cart;
+      let cart = await CartModel.findByUserId(userId);
+      if (cart) {
+        let items = await CartItemModel.findByCartId(cart.id);
+        cart.items = items;
+        return cart;
+      } else {
+        return null;
+      }
     } catch (err) {
       throw new Error(err);
     }
   }
 
-  static async findItems(cartId) {
+  async findItems(cartId) {
     try {
       const items = await CartItemModel.findByCartId(cartId);
       return items;
@@ -50,7 +57,7 @@ module.exports = class CartService {
     }
   }
 
-  static async addItem({ cartId, productId }) {
+  async addItem({ cartId, productId }) {
     try {
       const item = await CartItemModel.create({ cartId, productId });
       return item;
@@ -59,7 +66,7 @@ module.exports = class CartService {
     }
   }
 
-  static async removeItem(id) {
+  async removeItem(id) {
     try {
       const item = await CartItemModel.delete(id);
       console.log(item);
@@ -69,7 +76,16 @@ module.exports = class CartService {
     }
   }
 
-  static async checkout(userId, cartId, paymentInfo = {}) {
+  async delete(id) {
+    try {
+      const cart = await CartModel.delete(id);
+      return cart;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async checkout(userId, cartId, paymentInfo = {}) {
     try {
       const cartItems = await CartItemModel.findByCartId(cartId);
       const total = await CartItemModel.totalPrice(cartId);
@@ -117,4 +133,6 @@ module.exports = class CartService {
       throw new Error(err);
     }
   }
-};
+}
+
+module.exports = new CartService();

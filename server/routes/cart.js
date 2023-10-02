@@ -4,7 +4,7 @@ const { authenticate, validate } = require("../middleware");
 
 const router = express.Router();
 
-const CartService = require("../services/cart");
+const CartService = require("../services/CartService");
 
 module.exports = (app) => {
   app.use("/api/cart", router);
@@ -20,27 +20,11 @@ module.exports = (app) => {
   });
 
   // get cart
-  // looks for cart by user id and finds all items in cart
   router.get("/", [authenticate], async (req, res, next) => {
     try {
-      const cart = await CartService.findByUserId(req.user.id);
+      const cart = await CartService.loadCart(req.user.id);
       if (cart) {
-        res.status(200).json({ cart });
-      } else {
-        res.status(404).json({ message: "Not found" });
-      }
-    } catch (err) {
-      next(err);
-    }
-  });
-
-  // get cart items
-  router.get("/items", [authenticate], async (req, res, next) => {
-    try {
-      const cart = await CartService.findByUserId(req.user.id);
-      if (cart) {
-        const items = await CartService.findItems(cart.id);
-        res.status(200).json(items);
+        res.status(200).json(cart);
       } else {
         res.status(404).json({ message: "Not found" });
       }
@@ -64,7 +48,6 @@ module.exports = (app) => {
             cartId: cart.id,
             productId,
           });
-
           res.status(201).json(item);
         } else {
           let newCart = await CartService.create(req.user.id);
@@ -72,7 +55,6 @@ module.exports = (app) => {
             cartId: newCart.id,
             productId,
           });
-
           res.status(201).json(item);
         }
       } catch (err) {
@@ -82,7 +64,6 @@ module.exports = (app) => {
   );
 
   // remove item from cart
-  // deletes cartItem by id
   router.delete(
     "/items/:id",
     [authenticate, param("id").isInt().toInt(), validate],

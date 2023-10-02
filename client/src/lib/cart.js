@@ -1,6 +1,6 @@
 import axios from "axios";
 
-async function getCart() {
+async function cart() {
   try {
     let response = await axios.get("/api/cart");
     return response.data;
@@ -10,15 +10,10 @@ async function getCart() {
   }
 }
 
-async function getCartItems() {
-  try {
-    let response = await axios.get("/api/cart/items");
-    return response.data;
-  } catch (err) {
-    console.error(err);
-    return null;
-  }
-}
+export const getCartQuery = () => ({
+  queryKey: ["cart"],
+  queryFn: cart,
+});
 
 export async function addToCart(productId) {
   try {
@@ -37,13 +32,3 @@ export async function removeFromCart(productId) {
     console.error(err);
   }
 }
-
-export const getCartQuery = () => ({
-  queryKey: ["cart"],
-  queryFn: getCart,
-});
-
-export const getCartItemsQuery = () => ({
-  queryKey: ["cart", "items"],
-  queryFn: getCartItems,
-});
