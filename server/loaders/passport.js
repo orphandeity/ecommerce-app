@@ -4,6 +4,7 @@ const GoogleStrategy = require("passport-google-oauth20");
 const bcrypt = require("bcrypt");
 
 const userService = require("../services/user");
+const AuthService = require("../services/AuthService");
 
 module.exports = (app) => {
   app.use(passport.initialize());
@@ -19,22 +20,14 @@ module.exports = (app) => {
     done(null, { id: user.id, username: user.username });
   });
 
-  // local login
+  // Local login
   passport.use(
-    new LocalStrategy(async (username, password, done) => {
+    new LocalStrategy(async (username, password, cb) => {
       try {
-        console.log("passport local strategy");
-        const user = await userService.findByUsername(username);
-        if (!user) return done(null, false);
-        console.log("user ", user);
-
-        const isMatch = await bcrypt.compare(password, user.password_hash);
-        console.log("isMatch ", isMatch);
-
-        if (!isMatch) return done(null, false);
-        else return done(null, user);
+        let response = await AuthService.login({ username, password });
+        return cb(null, response);
       } catch (err) {
-        return done(err);
+        return cb(err);
       }
     })
   );

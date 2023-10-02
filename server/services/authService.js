@@ -20,6 +20,22 @@ class AuthService {
     }
   }
 
+  async login(data) {
+    let { username, password } = data;
+    try {
+      // Check if user exists
+      let user = await UserModel.findByUsername(username);
+      if (!user) return false;
+      // Check if password matches
+      let match = await bcrypt.compare(password, user.password_hash);
+      if (!match) return false;
+
+      return user;
+    } catch (err) {
+      return done(err);
+    }
+  }
+
   async googleLogin(profile) {
     let { id, displayName } = profile;
     try {

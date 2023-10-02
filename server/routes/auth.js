@@ -2,7 +2,7 @@ const express = require("express");
 const { body, matchedData } = require("express-validator");
 const { authenticate, validate } = require("../middleware");
 
-const AuthService = require("../services/authService");
+const AuthService = require("../services/AuthService");
 
 const router = express.Router();
 
@@ -33,6 +33,7 @@ module.exports = (app, passport) => {
     }
   );
 
+  // Local login
   router.post(
     "/login",
     [
@@ -40,15 +41,28 @@ module.exports = (app, passport) => {
       body("password").trim().notEmpty().escape(),
       validate,
     ],
-    // Authenticate user
     passport.authenticate("local", {
       successMessage: true,
       failureMessage: true,
     }),
-    // Send user data
     (req, res, next) => {
       res.status(200).send(req.user);
     }
+  );
+
+  // Google login
+  router.get(
+    "/google",
+    passport.authenticate("google", { scope: ["profile"] })
+  );
+
+  // Google login callback
+  router.get(
+    "/google/redirect",
+    passport.authenticate("google", {
+      successReturnToOrRedirect: "/",
+      failureRedirect: "/login",
+    })
   );
 
   router.all("/logout", [authenticate], (req, res, next) => {
