@@ -1,16 +1,8 @@
 import PropTypes from "prop-types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addToCart } from "../lib/cart";
+import { useAddItem } from "../lib/cart";
 
 export default function ProductDetail({ product }) {
-  const queryClient = useQueryClient();
-
-  const { isLoading, isSuccess, mutate } = useMutation({
-    mutationFn: () => addToCart(product.id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
-    },
-  });
+  const { mutate: addItem, isLoading, isSuccess } = useAddItem();
 
   return (
     <article>
@@ -22,7 +14,7 @@ export default function ProductDetail({ product }) {
           <h2>{product.name}</h2>
           <p>{product.description}</p>
           <p>{product.price_usd}</p>
-          <button onClick={() => mutate()} disabled={isLoading}>
+          <button onClick={() => addItem(product.id)} disabled={isLoading}>
             Add to cart
           </button>
           {isSuccess && <p style={{ color: "red" }}>Added to cart!</p>}

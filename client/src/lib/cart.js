@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 async function cart() {
@@ -15,7 +16,7 @@ export const getCartQuery = () => ({
   queryFn: cart,
 });
 
-export async function addToCart(productId) {
+async function addItem(productId) {
   try {
     let response = await axios.post("/api/cart/items", { productId });
     return response.data;
@@ -24,11 +25,33 @@ export async function addToCart(productId) {
   }
 }
 
-export async function removeFromCart(productId) {
+export function useAddItem() {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (productId) => addItem(productId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+  });
+  return mutation;
+}
+
+async function removeItem(productId) {
   try {
     let response = await axios.delete(`/api/cart/items/${productId}`);
     return response.data;
   } catch (err) {
     console.error(err);
   }
+}
+
+export function useRemoveItem() {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (productId) => removeItem(productId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+  });
+  return mutation;
 }

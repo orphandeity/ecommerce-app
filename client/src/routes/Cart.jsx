@@ -1,16 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCartQuery, removeFromCart } from "../lib/cart";
+import { useQuery } from "@tanstack/react-query";
+import { getCartQuery, useRemoveItem } from "../lib/cart";
 
 function Cart() {
-  const queryClient = useQueryClient();
   const { data: cart } = useQuery(getCartQuery());
 
-  const { mutate: removeItem } = useMutation({
-    mutationFn: removeFromCart,
-    onSuccess: () => {
-      queryClient.invalidateQueries(getCartQuery());
-    },
-  });
+  const { mutate: removeItem } = useRemoveItem();
 
   return (
     <div>
