@@ -3,10 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { authQuery } from "../lib/auth";
 
 function Auth() {
-  const { data } = useQuery(authQuery());
-  const loggedIn = data?.isAuthenticated;
+  const { data: isLoggedIn } = useQuery(authQuery());
 
-  if (loggedIn) {
+  if (isLoggedIn) {
     return (
       <Form method="post">
         <button type="submit">Logout</button>

@@ -31,14 +31,14 @@ export async function logout() {
 async function isAuthenticated() {
   try {
     let response = await axios.get("/api/auth/status");
-    return { isAuthenticated: response.data };
+    return response.data; // boolean
   } catch (err) {
     console.error(err);
-    return { isAuthenticated: false };
+    return false;
   }
 }
 
 export const authQuery = () => ({
-  queryKey: ["isAuthenticated"],
+  queryKey: ["auth"],
   queryFn: isAuthenticated,
 });

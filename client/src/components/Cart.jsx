@@ -1,5 +1,6 @@
 import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
+import { Link } from "react-router-dom";
 import { ShoppingBag, X } from "lucide-react";
 import CartItems from "./CartItems";
 
@@ -35,10 +36,11 @@ function Cart() {
         <Dialog.Overlay style={overlayStyles} />
         <Dialog.Content style={contentStyles} aria-describedby={undefined}>
           <Dialog.Title>Cart</Dialog.Title>
-          <CartItems />
           <Dialog.Close>
             <X />
           </Dialog.Close>
+          <CartItems />
+          <Link to="/checkout">Checkout</Link>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
