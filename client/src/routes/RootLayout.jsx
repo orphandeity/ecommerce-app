@@ -9,7 +9,7 @@ import styles from "../styles/rootLayout.module.css";
 export const action = (queryClient) => async () => {
   try {
     await logout();
-    queryClient.invalidateQueries({ queryKey: ["isAuthenticated"] });
+    queryClient.invalidateQueries({ queryKey: ["auth"] });
     return redirect("/");
   } catch (err) {
     console.error(err);

@@ -1,8 +1,19 @@
 import PropTypes from "prop-types";
 import { useAddItem } from "../lib/cart";
+import { useQuery } from "@tanstack/react-query";
+import { authQuery } from "../lib/auth";
 
 export default function ProductDetail({ product }) {
+  const { data: isLoggedIn } = useQuery(authQuery());
   const { mutate: addItem, isLoading, isSuccess } = useAddItem();
+
+  function handleAddItem() {
+    if (!isLoggedIn) {
+      alert("Please login first");
+      return;
+    }
+    addItem(product.id);
+  }
 
   return (
     <article>
@@ -14,7 +25,7 @@ export default function ProductDetail({ product }) {
           <h2>{product.name}</h2>
           <p>{product.description}</p>
           <p>{product.price_usd}</p>
-          <button onClick={() => addItem(product.id)} disabled={isLoading}>
+          <button onClick={handleAddItem} disabled={isLoading}>
             Add to cart
           </button>
           {isSuccess && <p style={{ color: "red" }}>Added to cart!</p>}

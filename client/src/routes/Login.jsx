@@ -15,7 +15,8 @@ export const action =
       let formData = await request.formData();
       let credentials = Object.fromEntries(formData);
       let response = await login(credentials);
-      queryClient.invalidateQueries({ queryKey: ["isAuthenticated"] });
+      queryClient.invalidateQueries({ queryKey: ["auth"] });
+
       if (response.status == 200) return redirect("/");
       else return { error: response.statusText };
     } catch (err) {
