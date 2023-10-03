@@ -9,6 +9,7 @@
 :root {
   --color-alpha-05: 0.05;
   --color-alpha-20: 0.2;
+  --color-alpha-90: 0.9;
   --color-stone-50: hsl(60, 9%, 98%);
   --color-stone-100: hsl(60, 5%, 96%);
   --color-stone-200: hsl(20, 6%, 90%);
@@ -21,6 +22,7 @@
   --color-stone-900: hsl(24, 10%, 10%);
   --color-stone-900-05: hsla(24, 10%, 10%, var(--color-alpha-05));
   --color-stone-900-20: hsla(24, 10%, 10%, var(--color-alpha-20));
+  --color-stone-900-90: hsla(24, 10%, 10%, var(--color-alpha-90));
   --color-stone-950: hsl(20, 14%, 4%);
 
   --background-color: var(--color-stone-100);
@@ -31,6 +33,8 @@
   --border-radius: 0.25rem;
 
   --on-hover-color: var(--color-stone-500);
+
+  --overlay-color: var(--color-stone-900-90);
 
   --padding: 1rem;
 

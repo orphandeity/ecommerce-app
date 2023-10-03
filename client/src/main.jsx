@@ -11,7 +11,6 @@ import Home, {
 } from "./routes/Home";
 import Product, { loader as productLoader } from "./routes/Product";
 import Login, { action as loginAction } from "./routes/Login";
-import Cart from "./routes/Cart";
 import Signup, { action as signupAction } from "./routes/Signup";
 
 import "./styles/reset.css";
@@ -35,10 +34,6 @@ const router = createBrowserRouter([
         path: "products/:id",
         Component: Product,
         loader: productLoader(queryClient),
-      },
-      {
-        path: "cart",
-        Component: Cart,
       },
       {
         path: "login",
