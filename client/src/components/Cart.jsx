@@ -22,6 +22,10 @@ let contentStyles = {
   maxWidth: "400px",
   maxHeight: "85vh",
   padding: "var(--padding)",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-end",
+  gap: "2rem",
 };
 
 function Cart() {
@@ -35,12 +39,22 @@ function Cart() {
       <Dialog.Portal>
         <Dialog.Overlay style={overlayStyles} />
         <Dialog.Content style={contentStyles} aria-describedby={undefined}>
-          <Dialog.Title>Cart</Dialog.Title>
-          <Dialog.Close>
-            <X />
-          </Dialog.Close>
+          <header
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Dialog.Title>Cart</Dialog.Title>
+            <Dialog.Close>
+              <X />
+            </Dialog.Close>
+          </header>
           <CartItems />
-          <Link to="/checkout">Checkout</Link>
+          <Link to="/checkout" onClick={() => setOpen(false)}>
+            Checkout
+          </Link>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
