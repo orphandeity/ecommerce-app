@@ -21,10 +21,11 @@ export default function Header() {
       <Link to="/">
         <strong>E-Commerce App</strong>
       </Link>
+      <Link to="/orders">Orders</Link>
       <div style={authStyles}>
+        {isLoggedIn && <Cart />}
         <Auth />
       </div>
-      {isLoggedIn && <Cart />}
     </header>
   );
 }

@@ -11,6 +11,10 @@ import Home, {
 } from "./routes/Home";
 import Product, { loader as productLoader } from "./routes/Product";
 import Checkout, { loader as checkoutLoader } from "./routes/Checkout";
+import Orders, { loader as ordersLoader } from "./routes/Orders";
+import OrderDetails, {
+  loader as orderDetailsLoader,
+} from "./routes/OrderDetails";
 import Login, { action as loginAction } from "./routes/Login";
 import Signup, { action as signupAction } from "./routes/Signup";
 
@@ -40,6 +44,18 @@ const router = createBrowserRouter([
         path: "/checkout",
         Component: Checkout,
         loader: checkoutLoader(queryClient),
+      },
+      {
+        path: "/orders",
+        Component: Orders,
+        loader: ordersLoader(queryClient),
+        children: [
+          {
+            path: ":id",
+            Component: OrderDetails,
+            loader: orderDetailsLoader(queryClient),
+          },
+        ],
       },
       {
         path: "login",
