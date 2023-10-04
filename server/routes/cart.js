@@ -100,6 +100,7 @@ module.exports = (app) => {
     }
   });
 
+  // Stripe checkout - https://stripe.com/docs/checkout/quickstart
   router.post("/create-checkout-session", async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       line_items: [

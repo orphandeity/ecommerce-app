@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { authQuery } from "../lib/auth";
-import { Link } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 import Auth from "./Auth";
 import Cart from "./Cart";
+import Menu from "./Menu";
 
 let headerStyles = {
   display: "flex",
@@ -21,11 +22,23 @@ export default function Header() {
       <Link to="/">
         <strong>E-Commerce App</strong>
       </Link>
-      <Link to="/orders">Orders</Link>
+
       <div style={authStyles}>
-        {isLoggedIn && <Cart />}
-        <Auth />
+        {isLoggedIn ? (
+          <>
+            <Form method="post">
+              <button type="submit" style={{ width: "100%" }}>
+                Logout
+              </button>
+            </Form>
+            <Cart />
+            <Menu />
+          </>
+        ) : (
+          <Auth />
+        )}
       </div>
     </header>
   );
 }
+0;

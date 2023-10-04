@@ -53,7 +53,7 @@ function Cart() {
           </header>
           <CartItems />
           <Link to="/checkout" onClick={() => setOpen(false)}>
-            Go to cart
+            View cart
           </Link>
         </Dialog.Content>
       </Dialog.Portal>

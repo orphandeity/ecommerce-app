@@ -1,35 +1,23 @@
-import { Link, Form } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { authQuery } from "../lib/auth";
+import { Link } from "react-router-dom";
 
 function Auth() {
-  const { data: isLoggedIn } = useQuery(authQuery());
-
-  if (isLoggedIn) {
-    return (
-      <Form method="post">
-        <button type="submit">Logout</button>
-      </Form>
-    );
-  } else {
-    return (
-      <menu
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "2rem",
-          listStyle: "none",
-        }}
-      >
-        <li>
-          <Link to="login">Login</Link>
-        </li>
-        <li>
-          <Link to="signup">Signup</Link>
-        </li>
-      </menu>
-    );
-  }
+  return (
+    <menu
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "2rem",
+        listStyle: "none",
+      }}
+    >
+      <li>
+        <Link to="login">Login</Link>
+      </li>
+      <li>
+        <Link to="signup">Signup</Link>
+      </li>
+    </menu>
+  );
 }
 
 export default Auth;

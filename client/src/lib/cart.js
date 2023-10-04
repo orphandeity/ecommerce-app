@@ -54,23 +54,3 @@ export function useRemoveItem() {
   });
   return mutation;
 }
-
-export async function checkout() {
-  try {
-    let response = await axios.post("/api/cart/create-checkout-session");
-    return response.data;
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-export function useCheckout() {
-  const queryClient = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: checkout,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
-    },
-  });
-  return mutation;
-}

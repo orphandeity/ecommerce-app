@@ -1,3 +1,4 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 export async function register(credentials) {
@@ -26,6 +27,17 @@ export async function logout() {
   } catch (err) {
     console.error(err);
   }
+}
+
+export async function useLogout() {
+  const queryClient = useQuery();
+  const logoutMutation = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["auth"]);
+    },
+  });
+  return logoutMutation;
 }
 
 async function isAuthenticated() {
