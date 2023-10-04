@@ -57,7 +57,7 @@ export function useRemoveItem() {
 
 export async function checkout() {
   try {
-    let response = await axios.post("/api/cart/checkout");
+    let response = await axios.post("/api/cart/create-checkout-session");
     return response.data;
   } catch (err) {
     console.error(err);

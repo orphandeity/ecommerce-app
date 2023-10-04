@@ -1,11 +1,13 @@
 const express = require("express");
 const { body, param, matchedData } = require("express-validator");
 const { authenticate, validate } = require("../middleware");
-const { DOMAIN, STRIPE_TEST_SECRET_KEY } = "../config";
-
-const stripe = require("stripe")(STRIPE_TEST_SECRET_KEY);
-
 const CartService = require("../services/CartService");
+
+const { DOMAIN, STRIPE_SK_TEST } = require("../config");
+
+const Stripe = require("stripe");
+const stripe = Stripe(STRIPE_SK_TEST);
+
 const router = express.Router();
 
 module.exports = (app) => {
@@ -98,28 +100,24 @@ module.exports = (app) => {
     }
   });
 
-  router.post(
-    "/create-checkout-session",
-    [authenticate],
-    async (req, res, next) => {
-      const session = await stripe.checkout.sessions.create({
-        line_items: [
-          {
-            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-            price: "price_1NxGV6CiNW1S46bgvG0A9QGi",
-            quantity: 1,
-          },
-          {
-            price: "price_1NxGS8CiNW1S46bgP0e5mrnC",
-            quantity: 1,
-          },
-        ],
-        mode: "payment",
-        success_url: `${DOMAIN}?success=true`,
-        cancel_url: `${DOMAIN}?canceled=true`,
-      });
+  router.post("/create-checkout-session", async (req, res) => {
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+          price: "price_1NxGV6CiNW1S46bgvG0A9QGi",
+          quantity: 1,
+        },
+        {
+          price: "price_1NxGSUCiNW1S46bgAFAoAub7",
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      success_url: `${DOMAIN}?success=true`,
+      cancel_url: `${DOMAIN}?canceled=true`,
+    });
 
-      res.redirect(303, session.url);
-    }
-  );
+    res.redirect(session.url);
+  });
 };

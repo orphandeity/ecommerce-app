@@ -10,10 +10,7 @@ import Home, {
   action as homeAction,
 } from "./routes/Home";
 import Product, { loader as productLoader } from "./routes/Product";
-import Checkout, {
-  loader as checkoutLoader,
-  action as checkoutAction,
-} from "./routes/Checkout";
+import Checkout, { loader as checkoutLoader } from "./routes/Checkout";
 import Orders, { loader as ordersLoader } from "./routes/Orders";
 import OrderDetails, {
   loader as orderDetailsLoader,
@@ -47,7 +44,6 @@ const router = createBrowserRouter([
         path: "/checkout",
         Component: Checkout,
         loader: checkoutLoader(queryClient),
-        action: checkoutAction,
       },
       {
         path: "/orders",
