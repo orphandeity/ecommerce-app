@@ -1,7 +1,7 @@
 const db = require("../db");
 
-module.exports = class CartItemModel {
-  static async create({ cartId, productId }) {
+class CartItemModel {
+  async create({ cartId, productId }) {
     try {
       const statement = `INSERT INTO cart_items (cart_id, product_id) VALUES ($1, $2) RETURNING *`;
       const values = [cartId, productId];
@@ -17,11 +17,11 @@ module.exports = class CartItemModel {
     }
   }
 
-  static async findByCartId(cartId) {
+  async findByCartId(cartId) {
     try {
       // const statement = `SELECT * FROM cart_items WHERE cart_id = $1`;
       const statement = `
-        SELECT ci.id AS cart_item_id, p.name, p.description, p.price_usd
+        SELECT ci.id AS cart_item_id, p.id as product_id, p.name, p.description, p.price_usd
         FROM cart_items ci
         JOIN products p ON ci.product_id = p.id
         WHERE ci.cart_id = $1
@@ -39,7 +39,7 @@ module.exports = class CartItemModel {
     }
   }
 
-  static async delete(id) {
+  async delete(id) {
     try {
       const statement = `DELETE FROM cart_items WHERE id = $1 RETURNING *`;
       const values = [id];
@@ -55,7 +55,23 @@ module.exports = class CartItemModel {
     }
   }
 
-  static async totalPrice(cartId) {
+  async deleteAll(cartId) {
+    try {
+      const statement = `DELETE FROM cart_items WHERE cart_id = $1 RETURNING *`;
+      const values = [cartId];
+      const result = await db.query(statement, values);
+
+      if (result.rows.length) {
+        return result.rows;
+      } else {
+        return null;
+      }
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async totalPrice(cartId) {
     const statement = `
       SELECT SUM(products.price_usd) AS total_price
       FROM cart_items
@@ -71,4 +87,6 @@ module.exports = class CartItemModel {
       return null;
     }
   }
-};
+}
+
+module.exports = new CartItemModel();

@@ -89,8 +89,6 @@ class CartService {
     try {
       const cartItems = await CartItemModel.findByCartId(cartId);
       const total = await CartItemModel.totalPrice(cartId);
-      console.log("total: ", total);
-      console.log("cartItems: ", cartItems);
 
       // TODO: process payment
       const paymentSuccessful = true;
@@ -100,7 +98,6 @@ class CartService {
 
       // create order
       const order = await OrderModel.create(userId);
-      console.log("order created: ", order);
       const newOrder = new OrderModel({
         orderId: order.id,
         userId,
@@ -108,25 +105,23 @@ class CartService {
           return { orderId: order.id, productId: item.product_id };
         }),
       });
-      console.log("new order: ", newOrder);
 
       // create order items
       newOrder.items = await Promise.all(
         newOrder.items.map(async (item) => {
           const orderItem = new OrderItemModel(item);
-          console.log("order item: ", orderItem);
           const createdItem = await orderItem.create();
-          console.log("created item: ", createdItem);
 
           return createdItem;
         })
       );
 
       // delete cart and cart items
-      cartItems.forEach(async (item) => {
-        await CartItemModel.delete(item.id);
-      });
+      await CartItemModel.deleteAll(cartId);
+      console.log(`\n\ncart items deleted`);
+
       await CartModel.delete(cartId);
+      console.log(`\ncart ${cartId} deleted\n\n`);
 
       return newOrder;
     } catch (err) {

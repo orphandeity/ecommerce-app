@@ -1,10 +1,12 @@
 const express = require("express");
 const { body, param, matchedData } = require("express-validator");
 const { authenticate, validate } = require("../middleware");
+const { DOMAIN, STRIPE_TEST_SECRET_KEY } = "../config";
 
-const router = express.Router();
+const stripe = require("stripe")(STRIPE_TEST_SECRET_KEY);
 
 const CartService = require("../services/CartService");
+const router = express.Router();
 
 module.exports = (app) => {
   app.use("/api/cart", router);
@@ -22,11 +24,13 @@ module.exports = (app) => {
   // get cart
   router.get("/", [authenticate], async (req, res, next) => {
     try {
-      const cart = await CartService.loadCart(req.user.id);
+      let cart = await CartService.loadCart(req.user.id);
       if (cart) {
         res.status(200).json(cart);
       } else {
-        res.status(404).json({ message: "Not found" });
+        let cart = await CartService.create(req.user.id);
+        cart.items = [];
+        res.status(200).json(cart);
       }
     } catch (err) {
       next(err);
@@ -93,4 +97,29 @@ module.exports = (app) => {
       next(err);
     }
   });
+
+  router.post(
+    "/create-checkout-session",
+    [authenticate],
+    async (req, res, next) => {
+      const session = await stripe.checkout.sessions.create({
+        line_items: [
+          {
+            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+            price: "price_1NxGV6CiNW1S46bgvG0A9QGi",
+            quantity: 1,
+          },
+          {
+            price: "price_1NxGS8CiNW1S46bgP0e5mrnC",
+            quantity: 1,
+          },
+        ],
+        mode: "payment",
+        success_url: `${DOMAIN}?success=true`,
+        cancel_url: `${DOMAIN}?canceled=true`,
+      });
+
+      res.redirect(303, session.url);
+    }
+  );
 };

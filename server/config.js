@@ -1,5 +1,6 @@
 module.exports = {
   PORT: process.env.PORT,
+  DOMAIN: process.env.DOMAIN,
   SESSION_SECRET: process.env.SESSION_SECRET,
   DB: {
     PGHOST: process.env.PGHOST,
@@ -13,4 +14,5 @@ module.exports = {
     CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI,
   },
+  STRIPE_TEST_SECRET_KEY: process.env.STRIPE_TEST_SECRET_KEY,
 };
