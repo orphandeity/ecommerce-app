@@ -85,6 +85,28 @@ class CartService {
     }
   }
 
+  async createLineItems(userId) {
+    try {
+      let cart = await this.loadCart(userId);
+      let line_items = cart.items.map((item) => {
+        return {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: item.name,
+            },
+            unit_amount_decimal: Math.round(item.price_usd * 100),
+          },
+          quantity: 1,
+        };
+      });
+
+      return line_items;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
   async checkout(userId, cartId, paymentInfo = {}) {
     try {
       const cartItems = await CartItemModel.findByCartId(cartId);

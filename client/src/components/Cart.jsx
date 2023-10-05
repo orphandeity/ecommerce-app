@@ -19,7 +19,7 @@ let contentStyles = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "50vw",
-  maxWidth: "400px",
+  maxWidth: "500px",
   maxHeight: "85vh",
   padding: "var(--padding)",
   display: "flex",

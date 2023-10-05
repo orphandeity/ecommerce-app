@@ -101,19 +101,12 @@ module.exports = (app) => {
   });
 
   // Stripe checkout - https://stripe.com/docs/checkout/quickstart
-  router.post("/create-checkout-session", async (req, res) => {
+  router.post("/create-checkout-session", [authenticate], async (req, res) => {
+    let userId = req.user.id;
+    let line_items = await CartService.createLineItems(userId);
+
     const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-          price: "price_1NxGV6CiNW1S46bgvG0A9QGi",
-          quantity: 1,
-        },
-        {
-          price: "price_1NxGSUCiNW1S46bgAFAoAub7",
-          quantity: 1,
-        },
-      ],
+      line_items,
       mode: "payment",
       success_url: `${DOMAIN}?success=true`,
       cancel_url: `${DOMAIN}?canceled=true`,
