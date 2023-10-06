@@ -17,6 +17,7 @@ import OrderDetails, {
 } from "./routes/OrderDetails";
 import Login, { action as loginAction } from "./routes/Login";
 import Signup, { action as signupAction } from "./routes/Signup";
+import Message from "./routes/Message";
 
 import "./styles/reset.css";
 import "./styles/global.css";
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
         path: "signup",
         Component: Signup,
         action: signupAction(queryClient),
+      },
+      {
+        path: "message",
+        Component: Message,
       },
     ],
   },
