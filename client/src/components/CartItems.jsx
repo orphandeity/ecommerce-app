@@ -39,7 +39,6 @@ export default function CartItems() {
             </tr>
           ))}
         </tbody>
-        <hr />
         <tfoot>
           <tr style={itemStyles}>
             <td>

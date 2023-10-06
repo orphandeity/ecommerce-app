@@ -1,0 +1,14 @@
+.wrapper {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  padding: 0.35rem;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}

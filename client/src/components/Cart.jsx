@@ -1,8 +1,9 @@
 import { useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Link } from "react-router-dom";
-import { ShoppingBag, X } from "lucide-react";
+import { X } from "lucide-react";
 import CartItems from "./CartItems";
+import CartIcon from "./CartIcon";
 
 let overlayStyles = {
   backgroundColor: "var(--overlay-color)",
@@ -33,8 +34,14 @@ function Cart() {
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Dialog.Trigger>
-        <ShoppingBag />
+      <Dialog.Trigger
+        style={{
+          backgroundColor: "var(--background-color)",
+          border: "none",
+          cursor: "pointer",
+        }}
+      >
+        <CartIcon />
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay style={overlayStyles} />

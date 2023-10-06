@@ -36,11 +36,7 @@ module.exports = class OrderModel {
       const values = [userId];
       const result = await db.query(statement, values);
 
-      if (result.rows.length) {
-        return result.rows;
-      } else {
-        return null;
-      }
+      return result.rows;
     } catch (err) {
       throw new Error(err);
     }
