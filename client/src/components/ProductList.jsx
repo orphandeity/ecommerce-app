@@ -18,15 +18,15 @@ function ProductCard({ id, name, price }) {
           overflow: "hidden",
         }}
       >
-        <img src="https://www.picsum.photos/250" alt="" />
+        <img src="https://www.picsum.photos/300/200" alt="" />
         <figcaption
           style={{
             padding: "var(--padding)",
             backgroundColor: "var(--background-secondary-color)",
           }}
         >
-          <h3>{name}</h3>
-          <p>{price}</p>
+          <b>{name}</b>
+          <p>${price}</p>
         </figcaption>
       </figure>
     </Link>
@@ -36,27 +36,24 @@ function ProductCard({ id, name, price }) {
 export default function ProductList({ products }) {
   if (!products) return null;
   return (
-    <div>
-      <h2>Product List</h2>
-      <ul
-        style={{
-          listStyle: "none",
-          display: "flex",
-          flexFlow: "row wrap",
-          gap: "2rem",
-        }}
-      >
-        {products.map((product) => (
-          <li key={product.id}>
-            <ProductCard
-              id={product.id}
-              name={product.name}
-              price={product.price_usd}
-            />
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul
+      style={{
+        listStyle: "none",
+        display: "flex",
+        flexFlow: "row wrap",
+        gap: "2rem",
+      }}
+    >
+      {products.map((product) => (
+        <li key={product.id}>
+          <ProductCard
+            id={product.id}
+            name={product.name}
+            price={product.price_usd}
+          />
+        </li>
+      ))}
+    </ul>
   );
 }
 
