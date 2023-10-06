@@ -25,7 +25,13 @@ function Menu() {
 
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger>
+      <DropdownMenu.Trigger
+        style={{
+          backgroundColor: "var(--background-color)",
+          border: "none",
+          cursor: "pointer",
+        }}
+      >
         <MenuIcon />
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>

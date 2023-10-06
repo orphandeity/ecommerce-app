@@ -1,5 +1,6 @@
 import { useLoaderData } from "react-router-dom";
 import {
+  getAllCategoriesQuery,
   getAllProductsQuery,
   getProductsByCategoryIdQuery,
 } from "../lib/product";
@@ -11,12 +12,23 @@ export const loader =
   async ({ request }) => {
     let url = new URL(request.url);
     let categoryId = url.searchParams.get("categoryId");
+
     if (categoryId) {
-      return await queryClient.ensureQueryData(
+      let categories = await queryClient.ensureQueryData(
+        getAllCategoriesQuery()
+      );
+      let products = await queryClient.ensureQueryData(
         getProductsByCategoryIdQuery(categoryId)
       );
+
+      const category = categories.find(
+        (c) => Number(c.id) === Number(categoryId)
+      );
+
+      return { products, category };
     }
-    return await queryClient.ensureQueryData(getAllProductsQuery());
+    let products = await queryClient.ensureQueryData(getAllProductsQuery());
+    return { products };
   };
 
 function Products() {
@@ -24,9 +36,9 @@ function Products() {
 
   return (
     <>
-      <h1>Products Page</h1>
+      <h1>{data.category ? data.category.name : "All products"}</h1>
       <CategorySelect />
-      <ProductList products={data} />
+      <ProductList products={data.products} />
     </>
   );
 }
