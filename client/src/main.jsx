@@ -5,11 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import RootLayout, { action as logoutAction } from "./routes/RootLayout";
-import Home, {
-  loader as homeLoader,
-  action as homeAction,
-} from "./routes/Home";
-import Product, { loader as productLoader } from "./routes/Product";
+import Products, { loader as productLoader } from "./routes/Products";
+import ProductDetails, {
+  loader as detailsLoader,
+} from "./routes/ProductDetails";
 import Checkout, { loader as checkoutLoader } from "./routes/Checkout";
 import Orders, { loader as ordersLoader } from "./routes/Orders";
 import OrderDetails, {
@@ -32,14 +31,13 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: Home,
-        loader: homeLoader(queryClient),
-        action: homeAction(queryClient),
+        Component: Products,
+        loader: productLoader(queryClient),
       },
       {
         path: "products/:id",
-        Component: Product,
-        loader: productLoader(queryClient),
+        Component: ProductDetails,
+        loader: detailsLoader(queryClient),
       },
       {
         path: "/checkout",

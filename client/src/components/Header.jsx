@@ -26,10 +26,8 @@ export default function Header() {
       <div style={authStyles}>
         {isLoggedIn ? (
           <>
-            <Form method="post">
-              <button type="submit" style={{ width: "100%" }}>
-                Logout
-              </button>
+            <Form method="POST">
+              <button type="submit">Logout</button>
             </Form>
             <Cart />
             <Menu />

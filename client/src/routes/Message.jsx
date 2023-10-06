@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
 export default function Message() {
@@ -24,7 +23,3 @@ export default function Message() {
     </div>
   );
 }
-
-Message.propTypes = {
-  message: PropTypes.string.isRequired,
-};

@@ -1,4 +1,6 @@
-import { Form, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getAllCategoriesQuery } from "../lib/product";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Menu as MenuIcon } from "lucide-react";
 
@@ -19,6 +21,8 @@ let separatorStyles = {
 };
 
 function Menu() {
+  const { data: categories } = useQuery(getAllCategoriesQuery());
+
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
@@ -29,29 +33,20 @@ function Menu() {
           <DropdownMenu.Item>
             <Link to="/">All products</Link>
           </DropdownMenu.Item>
-          <DropdownMenu.Separator style={separatorStyles} />
-          <DropdownMenu.Item>Dresses</DropdownMenu.Item>
-          <DropdownMenu.Item>Outerwear</DropdownMenu.Item>
-          <DropdownMenu.Item>Suits & Formalwear</DropdownMenu.Item>
-          <DropdownMenu.Item>Handbags & Accessories</DropdownMenu.Item>
-          <DropdownMenu.Item>Eyewear</DropdownMenu.Item>
-          <DropdownMenu.Item>Scarves & Jewelry</DropdownMenu.Item>
-          <DropdownMenu.Item>Footwear</DropdownMenu.Item>
+
+          {categories?.map((category) => (
+            <DropdownMenu.Item key={category.id}>
+              <Link to={`/?categoryId=${category.id}`}>{category.name}</Link>
+            </DropdownMenu.Item>
+          ))}
 
           <DropdownMenu.Separator style={separatorStyles} />
+
           <DropdownMenu.Item>
             <Link to="/checkout">View cart</Link>
           </DropdownMenu.Item>
           <DropdownMenu.Item>
             <Link to="/orders">Past orders</Link>
-          </DropdownMenu.Item>
-          <DropdownMenu.Separator style={separatorStyles} />
-          <DropdownMenu.Item>
-            <Form method="post">
-              <button type="submit" style={{ width: "100%" }}>
-                Logout
-              </button>
-            </Form>
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
