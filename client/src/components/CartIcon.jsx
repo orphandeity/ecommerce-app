@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getCartQuery } from "../lib/cart";
 import { ShoppingBag } from "lucide-react";
 
-import styles from "../styles/CartIcon.module.css";
+import styles from "../styles/cart.module.css";
 
 function CartIcon() {
   let { data: cart } = useQuery(getCartQuery());

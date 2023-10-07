@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getCartQuery, useRemoveItem } from "../lib/cart";
 import { Delete } from "lucide-react";
@@ -13,7 +14,9 @@ export default function CartItems() {
   if (isEmpty) return <p>Cart is empty</p>;
 
   function total(items) {
-    return items.reduce((sum, item) => sum + Number(item.price_usd), 0);
+    return items
+      .reduce((sum, item) => sum + Number(item.price_usd), 0)
+      .toFixed(2);
   }
 
   return (
@@ -21,7 +24,7 @@ export default function CartItems() {
       <ul style={listStyles}>
         {cart.items.map((item) => (
           <li key={item.cart_item_id} style={itemStyles}>
-            <div>{item.name}</div>
+            <Link to={`/products/${item.product_id}`}>{item.name}</Link>
             <div>${item.price_usd}</div>
             <div>
               <button

@@ -7,19 +7,20 @@ export const loader = (queryClient) => async () => {
   let isLoggedIn = await queryClient.ensureQueryData(authQuery());
   if (!isLoggedIn) return redirect("/login");
 
-  let cart = await queryClient.ensureQueryData(getCartQuery());
-  return { cart };
+  const cart = await queryClient.ensureQueryData(getCartQuery());
+
+  return cart;
 };
 
 function Checkout() {
-  let { cart } = useLoaderData();
-
+  const cart = useLoaderData();
   let isEmpty = cart.items.length == 0;
 
   return (
     <div style={{ display: "grid", gap: "4rem" }}>
       <h1>Shopping Cart</h1>
       <CartItems />
+
       <form action="/api/cart/create-checkout-session" method="post">
         <button type="submit" disabled={isEmpty}>
           Checkout

@@ -1,0 +1,54 @@
+/* cart icon styles */
+.wrapper {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  padding: 0.35rem;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}
+
+/* cart dialog styles */
+.overlay {
+  background-color: var(--overlay-color);
+  position: fixed;
+  inset: 0;
+}
+
+.trigger {
+}
+
+.content {
+  background-color: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  max-width: 400px;
+  max-height: 85vh;
+  padding: var(--padding);
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding);
+  font-size: var(--font-size-sm);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+}

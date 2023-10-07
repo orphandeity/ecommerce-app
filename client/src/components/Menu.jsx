@@ -52,7 +52,7 @@ function Menu() {
             <Link to="/checkout">View cart</Link>
           </DropdownMenu.Item>
           <DropdownMenu.Item>
-            <Link to="/orders">Past orders</Link>
+            <Link to="/orders">Order history</Link>
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
