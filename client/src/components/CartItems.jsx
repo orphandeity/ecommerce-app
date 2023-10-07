@@ -1,3 +1,4 @@
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getCartQuery, useRemoveItem } from "../lib/cart";
@@ -6,6 +7,8 @@ import { Delete } from "lucide-react";
 export default function CartItems() {
   const { data: cart, isLoading, isError } = useQuery(getCartQuery());
   const { mutate: removeItem } = useRemoveItem();
+
+  const [parent] = useAutoAnimate();
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error!</p>;
@@ -21,7 +24,7 @@ export default function CartItems() {
 
   return (
     <div style={{ display: "grid", gap: "1rem" }}>
-      <ul style={listStyles}>
+      <ul ref={parent} style={listStyles}>
         {cart.items.map((item) => (
           <li key={item.cart_item_id} style={itemStyles}>
             <Link to={`/products/${item.product_id}`}>{item.name}</Link>
