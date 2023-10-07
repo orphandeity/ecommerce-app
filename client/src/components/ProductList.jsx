@@ -3,6 +3,8 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { getImageModuleById } from "../lib/util";
 
+import styles from "../styles/productList.module.css";
+
 const imageModules = import.meta.glob("../assets/images/*.jpg");
 
 function ProductCard({ id, name, price }) {
@@ -15,28 +17,10 @@ function ProductCard({ id, name, price }) {
   }, [id]);
 
   return (
-    <Link
-      to={`/products/${id}`}
-      style={{
-        color: "var(--foreground-color",
-        textDecoration: "none",
-      }}
-    >
-      <figure
-        style={{
-          borderRadius: "var(--border-radius)",
-          boxShadow: "var(--shadow)",
-          outline: "1px solid var(--shadow-outline-color)",
-          overflow: "hidden",
-        }}
-      >
-        <img ref={imgRef} alt="" width={300} />
-        <figcaption
-          style={{
-            padding: "var(--padding)",
-            backgroundColor: "var(--background-secondary-color)",
-          }}
-        >
+    <Link to={`/products/${id}`} className={styles.link}>
+      <figure className={styles.figure}>
+        <img ref={imgRef} alt="" className={styles.image} />
+        <figcaption className={styles.figcaption}>
           <b>{name}</b>
           <p>${price}</p>
         </figcaption>
@@ -48,14 +32,7 @@ function ProductCard({ id, name, price }) {
 export default function ProductList({ products }) {
   if (!products) return null;
   return (
-    <ul
-      style={{
-        listStyle: "none",
-        display: "flex",
-        flexFlow: "row wrap",
-        gap: "2rem",
-      }}
-    >
+    <ul className={styles.list}>
       {products.map((product) => (
         <li key={product.id}>
           <ProductCard
