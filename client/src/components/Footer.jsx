@@ -5,9 +5,15 @@ export default function Footer() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        marginTop: "var(--padding)",
       }}
     >
-      <small>created by orphandeity</small>
+      <small>
+        🫠 created by{" "}
+        <a href="https://www.jeffwilliams.xyz" target="_blank" rel="noreferrer">
+          Jeff Williams
+        </a>
+      </small>
     </footer>
   );
 }

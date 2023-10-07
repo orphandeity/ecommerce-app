@@ -10,6 +10,7 @@
 * {
   margin: 0;
   padding: 0;
+  line-height: calc(1em + 0.5rem);
 }
 body {
   line-height: 1.5;

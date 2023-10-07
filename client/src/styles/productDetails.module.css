@@ -1,0 +1,17 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--padding);
+}
+
+.image {
+  object-fit: cover;
+  width: 100%;
+  max-height: 85%;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--padding);
+}
