@@ -1,7 +1,27 @@
 import PropTypes from "prop-types";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
+const imageModules = import.meta.glob("../assets/images/*.jpg");
+
+function getImageModuleById(id) {
+  let imagePath = `../assets/images/product_${id}.jpg`;
+  let modulePath = imageModules[imagePath];
+  if (!modulePath) {
+    throw new Error(`Image module not found for id ${id}`);
+  }
+  return modulePath().then((module) => module.default);
+}
+
 function ProductCard({ id, name, price }) {
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    getImageModuleById(id).then((image) => {
+      imgRef.current.src = image;
+    });
+  }, [id]);
+
   return (
     <Link
       to={`/products/${id}`}
@@ -18,7 +38,7 @@ function ProductCard({ id, name, price }) {
           overflow: "hidden",
         }}
       >
-        <img src="https://www.picsum.photos/300/200" alt="" />
+        <img ref={imgRef} alt="" />
         <figcaption
           style={{
             padding: "var(--padding)",
