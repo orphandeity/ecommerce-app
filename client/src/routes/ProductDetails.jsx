@@ -3,6 +3,10 @@ import { getProductByIdQuery } from "../lib/product";
 import { useAddItem } from "../lib/cart";
 import { useQuery } from "@tanstack/react-query";
 import { authQuery } from "../lib/auth";
+import { useEffect, useRef } from "react";
+import { getImageModuleById } from "../lib/util";
+
+const imageModules = import.meta.glob("../assets/images/*.jpg");
 
 export const loader =
   (queryClient) =>
@@ -15,6 +19,14 @@ export default function Product() {
 
   const { data: isLoggedIn } = useQuery(authQuery());
   const { mutate: addItem, isLoading, isSuccess } = useAddItem();
+
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    getImageModuleById(imageModules, product.id).then((image) => {
+      imgRef.current.src = image;
+    });
+  }, [product.id]);
 
   function handleAddItem() {
     if (!isLoggedIn) {
@@ -35,7 +47,7 @@ export default function Product() {
             gap: "1rem",
           }}
         >
-          <img src="https://www.picsum.photos/1200/800" alt="" />
+          <img ref={imgRef} alt="" />
           <div>
             <h2>{product.name}</h2>
             <p>{product.description}</p>

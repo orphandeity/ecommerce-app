@@ -1,23 +1,15 @@
 import PropTypes from "prop-types";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { getImageModuleById } from "../lib/util";
 
 const imageModules = import.meta.glob("../assets/images/*.jpg");
-
-function getImageModuleById(id) {
-  let imagePath = `../assets/images/product_${id}.jpg`;
-  let modulePath = imageModules[imagePath];
-  if (!modulePath) {
-    throw new Error(`Image module not found for id ${id}`);
-  }
-  return modulePath().then((module) => module.default);
-}
 
 function ProductCard({ id, name, price }) {
   const imgRef = useRef(null);
 
   useEffect(() => {
-    getImageModuleById(id).then((image) => {
+    getImageModuleById(imageModules, id).then((image) => {
       imgRef.current.src = image;
     });
   }, [id]);
@@ -38,7 +30,7 @@ function ProductCard({ id, name, price }) {
           overflow: "hidden",
         }}
       >
-        <img ref={imgRef} alt="" />
+        <img ref={imgRef} alt="" width={300} />
         <figcaption
           style={{
             padding: "var(--padding)",
