@@ -25,7 +25,6 @@ let contentStyles = {
   padding: "var(--padding)",
   display: "flex",
   flexDirection: "column",
-  alignItems: "flex-end",
   gap: "2rem",
 };
 

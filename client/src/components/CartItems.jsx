@@ -17,38 +17,32 @@ export default function CartItems() {
   }
 
   return (
-    <div>
-      <table style={listStyles}>
-        <thead>
-          <tr style={itemStyles}>
-            <th>Item</th>
-            <th>Price</th>
-            <th>Remove</th>
-          </tr>
-        </thead>
-        <tbody style={{ display: "grid", gap: "1rem" }}>
-          {cart.items.map((item) => (
-            <tr key={item.cart_item_id} style={itemStyles}>
-              <td>{item.name}</td>
-              <td>${item.price_usd}</td>
-              <td>
-                <button onClick={() => removeItem(item.cart_item_id)}>
-                  <Delete />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr style={itemStyles}>
-            <td>
-              <b>Total</b>
-            </td>
-            <td>${total(cart.items)}</td>
-            <td></td>
-          </tr>
-        </tfoot>
-      </table>
+    <div style={{ display: "grid", gap: "1rem" }}>
+      <ul style={listStyles}>
+        {cart.items.map((item) => (
+          <li key={item.cart_item_id} style={itemStyles}>
+            <div>{item.name}</div>
+            <div>${item.price_usd}</div>
+            <div>
+              <button
+                style={{
+                  backgroundColor: "var(--background-color)",
+                  color: "red",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+                onClick={() => removeItem(item.cart_item_id)}
+              >
+                <Delete />
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <hr />
+      <div style={{ textAlign: "right" }}>
+        <b>Subtotal: ${total(cart.items)}</b>
+      </div>
     </div>
   );
 }
@@ -57,12 +51,12 @@ export default function CartItems() {
 let listStyles = {
   display: "flex",
   flexDirection: "column",
-  gap: "1rem",
+  gap: "var(--padding)",
   width: "100%",
 };
 
 let itemStyles = {
   display: "grid",
-  gridTemplateColumns: "2fr 1fr 1fr",
-  textAlign: "left",
+  gridTemplateColumns: "2fr auto auto",
+  gap: "var(--padding)",
 };

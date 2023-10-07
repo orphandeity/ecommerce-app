@@ -18,7 +18,7 @@ function Checkout() {
 
   return (
     <div style={{ display: "grid", gap: "4rem" }}>
-      <h1>Checkout Page</h1>
+      <h1>Shopping Cart</h1>
       <CartItems />
       <form action="/api/cart/create-checkout-session" method="post">
         <button type="submit" disabled={isEmpty}>
