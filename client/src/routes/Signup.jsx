@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import { register } from "../lib/auth";
 
+import styles from "../styles/auth.module.css";
+
 export const action =
   (queryClient) =>
   async ({ request }) => {
@@ -29,35 +31,32 @@ export default function Signup() {
 
   let actionData = useActionData();
 
-  const formStyles = {
-    display: "flex",
-    flexDirection: "column",
-    gap: "1rem",
-    marginTop: "4rem",
-  };
-
   return (
-    <div
-      style={{ display: "grid", placeItems: "center", gap: "var(--padding)" }}
-    >
-      <Form method="post" replace style={formStyles}>
+    <div className={styles.wrapper}>
+      <div className={styles.card}>
         <h1>Sign up</h1>
-        <label>
-          Username: <input name="username" type="text" />
-        </label>
-        <label>
-          Password: <input name="password" type="password" />
-        </label>
-        <button type="submit" disabled={isSigningUp}>
-          {isSigningUp ? "Signing up..." : "Sign up"}
-        </button>
-        {actionData && actionData.error ? (
-          <p style={{ color: "red" }}>{actionData.error}</p>
-        ) : null}
-      </Form>
-      <p>
-        Already have an account? <Link to="/login">Log in</Link>
-      </p>
+        <Form method="post" replace className={styles.form}>
+          <div className={styles.inputGroup}>
+            <div className={styles.input}>
+              <label>Username</label>
+              <input name="username" type="text" />
+            </div>
+            <div className={styles.input}>
+              <label>Password:</label>
+              <input name="password" type="password" />
+            </div>
+          </div>
+          <button type="submit" disabled={isSigningUp}>
+            {isSigningUp ? "Signing up..." : "Sign up"}
+          </button>
+        </Form>
+        <p>
+          Already have an account? <Link to="/login">Log in</Link>
+        </p>
+      </div>
+      {actionData && actionData.error ? (
+        <p className={styles.error}>{actionData.error}</p>
+      ) : null}
     </div>
   );
 }

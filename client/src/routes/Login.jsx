@@ -8,6 +8,8 @@ import {
 import { login } from "../lib/auth";
 import GoogleLogin from "../components/GoogleLogin";
 
+import styles from "../styles/auth.module.css";
+
 export const action =
   (queryClient) =>
   async ({ request }) => {
@@ -32,45 +34,42 @@ export default function Login() {
 
   let actionData = useActionData();
 
-  const formStyles = {
-    display: "flex",
-    flexDirection: "column",
-    gap: "1rem",
-    marginTop: "4rem",
-  };
-
   return (
-    <div
-      style={{
-        display: "grid",
-        placeItems: "center",
-      }}
-    >
-      <div
-        style={{
-          display: "grid",
-          justifyContent: "center",
-          gap: "1rem",
-        }}
-      >
+    <div className={styles.wrapper}>
+      <div className={styles.card}>
         <h1>Login</h1>
-        <Form method="post" replace style={formStyles}>
-          <label>Username</label>
-          <input name="username" type="text" min={3} max={20} required />
-          <label>Password</label>
-          <input name="password" type="password" pattern="\w{8, 20}" required />
+        <Form method="post" replace className={styles.form}>
+          <div className={styles.inputGroup}>
+            <div className={styles.input}>
+              <label>Username</label>
+              <input name="username" type="text" min={3} max={20} required />
+            </div>
+            <div className={styles.input}>
+              <label>Password</label>
+              <input
+                name="password"
+                type="password"
+                pattern="\w{8, 20}"
+                required
+              />
+            </div>
+          </div>
           <button type="submit" disabled={isLoggingIn}>
             {isLoggingIn ? "Logging in..." : "Log in"}
           </button>
-          {actionData && actionData.error ? (
-            <p style={{ color: "red" }}>{actionData.error}</p>
-          ) : null}
         </Form>
+
+        <p>- or -</p>
+
         <GoogleLogin />
+
         <p>
           Don&apos;t have an account? <Link to="/signup">Sign up</Link>
         </p>
       </div>
+      {actionData && actionData.error ? (
+        <p className={styles.error}>{actionData.error}</p>
+      ) : null}
     </div>
   );
 }

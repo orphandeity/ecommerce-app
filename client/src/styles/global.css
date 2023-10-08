@@ -25,6 +25,18 @@
   --color-stone-900-90: hsla(24, 10%, 10%, var(--color-alpha-90));
   --color-stone-950: hsl(20, 14%, 4%);
 
+  --color-indigo-50: hsl(226, 100%, 97%);
+  --color-indigo-100: hsl(226, 100%, 94%);
+  --color-indigo-200: hsl(228, 96%, 89%);
+  --color-indigo-300: hsl(230, 94%, 82%);
+  --color-indigo-400: hsl(234, 89%, 74%);
+  --color-indigo-500: hsl(239, 84%, 67%);
+  --color-indigo-600: hsl(243, 75%, 59%);
+  --color-indigo-700: hsl(245, 58%, 51%);
+  --color-indigo-800: hsl(244, 55%, 41%);
+  --color-indigo-900: hsl(242, 47%, 34%);
+  --color-indigo-950: hsl(244, 47%, 20%);
+
   --background-color: var(--color-stone-100);
   --background-secondary-color: var(--color-stone-50);
   --foreground-color: var(--color-stone-900);
@@ -34,7 +46,9 @@
 
   --font-size-sm: 0.85rem;
 
-  --on-hover-color: var(--color-stone-500);
+  --link-color: var(--color-indigo-900);
+
+  --on-hover-color: var(--color-indigo-600);
 
   --overlay-color: var(--color-stone-900-90);
 
@@ -48,10 +62,22 @@
 }
 
 a {
-  color: var(--foreground-color);
+  color: var(--link-color);
   text-decoration: none;
 
   &:is(:hover, :active) {
     color: var(--on-hover-color);
   }
+}
+
+button,
+input {
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  padding: 0.25rem 0.5rem;
+}
+
+label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
 }
