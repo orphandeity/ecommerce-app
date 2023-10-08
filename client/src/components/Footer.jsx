@@ -5,7 +5,7 @@ export default function Footer() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        marginTop: "var(--padding)",
+        marginTop: "2rem",
       }}
     >
       <small>
